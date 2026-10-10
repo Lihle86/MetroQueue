@@ -11,7 +11,7 @@
             padding: 15px;
             background-color: #f4f6f9;
             color: #333;
-            padding-bottom: 90px;
+            padding-bottom: 95px;
         }
         h1 {
             font-size: 26px;
@@ -27,7 +27,6 @@
             font-size: 14px;
             margin-bottom: 25px;
         }
-        
         .my-ticket-banner {
             display: none;
             background: #2563eb;
@@ -39,7 +38,6 @@
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
         }
-
         .card {
             background: white;
             border-radius: 12px;
@@ -93,7 +91,6 @@
             color: #0f172a;
             margin-top: 2px;
         }
-
         .details {
             margin-top: 12px;
             font-size: 14px;
@@ -109,21 +106,19 @@
             border-radius: 6px;
             display: inline-block;
         }
-        
         .join-line-btn {
             display: block;
             width: 100%;
             background-color: #0f172a;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             font-weight: 700;
             font-size: 14px;
             margin-top: 12px;
             cursor: pointer;
         }
-
         .btn-container {
             position: fixed;
             bottom: 0;
@@ -157,8 +152,6 @@
             padding: 14px;
             cursor: pointer;
         }
-
-        /* Modal Styles */
         .modal {
             display: none; 
             position: fixed; 
@@ -174,13 +167,10 @@
             border-radius: 16px;
             width: 85%;
             max-width: 400px;
-            max-height: 80vh;
-            overflow-y: auto;
         }
-        .form-group { margin-bottom: 12px; }
+        .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
-        .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; }
-        
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
         .guard-list-item {
             background: #f8fafc;
             padding: 10px;
@@ -195,7 +185,7 @@
             background: #22c55e;
             color: white;
             border: none;
-            padding: 4px 10px;
+            padding: 6px 12px;
             border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
@@ -208,7 +198,7 @@
     <div class="subtitle">Cape Town CBD Live Line Monitor</div>
 
     <div id="ticketBanner" class="my-ticket-banner">
-        🎟️ Your Ticket (<span id="myUserFull">--</span>) for <span id="myDept">--</span>: <span id="myNum">#--</span> 
+        🎟️ Ticket (<span id="myUserFull">--</span>) for <span id="myDept">--</span>: <span id="myNum">#--</span> 
         (People Ahead: <span id="myWait">--</span>)
     </div>
 
@@ -227,7 +217,25 @@
                 <strong>Branch:</strong> Thomas Boydell Building (Parade St)<br>
                 <strong>Est. Wait Time:</strong> 120 Mins
             </div>
+            <div class="warning-text">⚠️ Spilling onto public pavement</div>
             <button class="join-line-btn" onclick="openRegistration('DEPARTMENT OF LABOUR', 'LABOUR')">🎟️ Register & Join Queue</button>
+        </div>
+
+        <!-- CCMA -->
+        <div class="card LOW">
+            <div class="dept-header">
+                <span>CCMA</span>
+                <span class="badge badge-LOW">LOW</span>
+            </div>
+            <div class="live-counter-grid">
+                <div class="counter-box">Now Serving<div class="counter-number" id="serving-CCMA">18</div></div>
+                <div class="counter-box">Total Queue<div class="counter-number" id="total-CCMA">24</div></div>
+            </div>
+            <div class="details">
+                <strong>Branch:</strong> CCMA House (Darling St)<br>
+                <strong>Est. Wait Time:</strong> 15 Mins
+            </div>
+            <button class="join-line-btn" onclick="openRegistration('CCMA', 'CCMA')">🎟️ Register & Join Queue</button>
         </div>
 
         <!-- SASSA -->
@@ -244,40 +252,32 @@
                 <strong>Branch:</strong> CBD Local Office<br>
                 <strong>Est. Wait Time:</strong> 110 Mins
             </div>
+            <div class="warning-text">⚠️ Spilling onto public pavement</div>
             <button class="join-line-btn" onclick="openRegistration('SASSA', 'SASSA')">🎟️ Register & Join Queue</button>
         </div>
-    </div>
 
-    <!-- Dual Control Footer Options -->
-    <div class="btn-container">
-        <button class="guard-portal-btn" onclick="openGuardPortal()">🛡️ Entrance Guard Portal</button>
-        <button class="report-btn" onclick="alert('Patrol Report Opened')">➕ Patrol Log</button>
-    </div>
-
-    <!-- Citizen Registration Modal -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <h3 style="margin-top:0">Enter Your Identity Details</h3>
-            <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
-                <div class="form-group">
-                    <label>First Name</label>
-                    <input type="text" id="firstName" required>
-                </div>
-                <div class="form-group">
-                    <label>Surname</label>
-                    <input type="text" id="surname" required>
-                </div>
-                <button type="submit" style="width:100%; padding:12px; background:#0f172a; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Secure My Ticket Slot</button>
-                <button type="button" onclick="closeModal('registerModal')" style="width:100%; padding:10px; background:#e2e8f0; color:#475569; border:none; border-radius:8px; font-weight:bold; margin-top:8px; cursor:pointer;">Cancel</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Entrance Guard Verification View Modal -->
-    <div id="guardModal" class="modal">
-        <div class="modal-content">
-            <h3 style="margin-top:0">Main Entrance Access Verification</h3>
-            <p style="font-size:12px; color:#64748b; margin-bottom:15px;">Verify the identity matches the citizen's paperwork before admitting them inside.</p>
-            <div id="guardListArea">
-                <!-- Registered users will dynamically appear inside here -->
+        <!-- Home Affairs -->
+        <div class="card CRITICAL">
+            <div class="dept-header">
+                <span>HOME AFFAIRS</span>
+                <span class="badge badge-CRITICAL">CRITICAL</span>
             </div>
+            <div class="live-counter-grid">
+                <div class="counter-box">Now Serving<div class="counter-number" id="serving-HOME">310</div></div>
+                <div class="counter-box">Total Queue<div class="counter-number" id="total-HOME">395</div></div>
+            </div>
+            <div class="details">
+                <strong>Branch:</strong> Barrack Street<br>
+                <strong>Est. Wait Time:</strong> 180 Mins
+            </div>
+            <div class="warning-text">⚠️ Spilling onto public pavement</div>
+            <button class="join-line-btn" onclick="openRegistration('HOME AFFAIRS', 'HOME')">🎟️ Register & Join Queue</button>
+        </div>
+
+        <!-- Housing Department -->
+        <div class="card MEDIUM">
+            <div class="dept-header">
+                <span>HOUSING DEPARTMENT</span>
+                <span class="badge badge-MEDIUM">MEDIUM</span>
+            </div>
+            <div class="live-counter-grid">
