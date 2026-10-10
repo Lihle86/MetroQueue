@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetroQueue CPT - Dashboard</title>
+    <title>MetroQueue CPT - Virtual Queue Monitor</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -11,12 +11,15 @@
             padding: 15px;
             background-color: #f4f6f9;
             color: #333;
+            padding-bottom: 90px;
         }
         h1 {
-            font-size: 24px;
+            font-size: 26px;
             color: #1e293b;
             text-align: center;
+            margin-top: 10px;
             margin-bottom: 5px;
+            font-weight: 700;
         }
         .subtitle {
             text-align: center;
@@ -24,63 +27,130 @@
             font-size: 14px;
             margin-bottom: 25px;
         }
+        
+        /* Ticket Info Strip if you are in line */
+        .my-ticket-banner {
+            display: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+
         .card {
             background: white;
             border-radius: 12px;
-            padding: 15px;
+            padding: 18px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-left: 5px solid #cbd5e1;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-left: 6px solid #cbd5e1;
         }
-        /* Dynamic Border Colors based on Safety/Congestion Levels */
-        .CRITICAL { border-left-color: #ef4444; } /* Red */
-        .HIGH { border-left-color: #f97316; }     /* Orange */
-        .MEDIUM { border-left-color: #eab308; }   /* Yellow */
-        .LOW { border-left-color: #22c55e; }      /* Green */
+        .CRITICAL { border-left-color: #ef4444; } 
+        .HIGH { border-left-color: #f97316; }     
+        .MEDIUM { border-left-color: #eab308; }   
+        .LOW { border-left-color: #22c55e; }      
 
         .dept-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 18px;
+            color: #0f172a;
         }
         .badge {
-            font-size: 12px;
-            padding: 4px 8px;
+            font-size: 11px;
+            padding: 4px 10px;
             border-radius: 20px;
             color: white;
-            font-weight: bold;
+            font-weight: 800;
         }
         .badge-CRITICAL { background-color: #ef4444; }
         .badge-HIGH { background-color: #f97316; }
         .badge-MEDIUM { background-color: #eab308; }
         .badge-LOW { background-color: #22c55e; }
 
+        /* Counter tracking boxes inside cards */
+        .live-counter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 12px;
+            text-align: center;
+        }
+        .counter-box {
+            font-size: 13px;
+            color: #64748b;
+        }
+        .counter-number {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-top: 2px;
+        }
+
         .details {
-            margin-top: 10px;
+            margin-top: 12px;
             font-size: 14px;
             color: #475569;
+            line-height: 1.5;
         }
         .warning-text {
-            color: #b91c1c;
-            font-weight: bold;
-            margin-top: 5px;
-            display: flex;
-            align-items: center;
+            color: #dc2626;
+            font-weight: 700;
+            margin-top: 10px;
+            font-size: 13px;
+            background: #fef2f2;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
         }
-        .report-btn {
+        
+        .join-line-btn {
             display: block;
             width: 100%;
+            background-color: #0f172a;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .join-line-btn:hover { background-color: #1e293b; }
+
+        .btn-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, #f4f6f9 80%, rgba(244,246,249,0));
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+        }
+        .report-btn {
+            width: 90%;
             background-color: #2563eb;
             color: white;
             text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 20px;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
     </style>
 </head>
@@ -89,81 +159,118 @@
     <h1>MetroQueue</h1>
     <div class="subtitle">Cape Town CBD Live Line Monitor</div>
 
+    <!-- Active Ticket Display Banner -->
+    <div id="ticketBanner" class="my-ticket-banner">
+        🎟️ Your Ticket for <span id="myDept">--</span>: <span id="myNum">#--</span> 
+        (People Ahead: <span id="myWait">--</span>)
+    </div>
+
     <!-- Live Feed Container -->
     <div id="queue-feed">
-                <!-- Department of Labour Card -->
+        
+        <!-- Department of Labour -->
         <div class="card HIGH">
             <div class="dept-header">
                 <span>DEPARTMENT OF LABOUR</span>
                 <span class="badge badge-HIGH">HIGH</span>
             </div>
+            <div class="live-counter-grid">
+                <div class="counter-box">Now Serving<div class="counter-number" id="serving-LABOUR">142</div></div>
+                <div class="counter-box">Total Queue<div class="counter-number" id="total-LABOUR">185</div></div>
+            </div>
             <div class="details">
                 <strong>Branch:</strong> Thomas Boydell Building (Parade St)<br>
-                <strong>Line Length:</strong> 38 Meters<br>
+                <strong>Physical Line:</strong> ~38 Meters <br>
                 <strong>Est. Wait Time:</strong> 120 Mins
             </div>
             <div class="warning-text">⚠️ Spilling onto public pavement</div>
+            <button class="join-line-btn" onclick="joinQueue('DEPARTMENT OF LABOUR', 'LABOUR')">🎟️ Join Virtual Queue</button>
         </div>
 
-        <!-- CCMA Card -->
-        <div class="card LOW">
-            <div class="dept-header">
-                <span>CCMA</span>
-                <span class="badge badge-LOW">LOW</span>
-            </div>
-            <div class="details">
-                <strong>Branch:</strong> CCMA House (Darling St)<br>
-                <strong>Line Length:</strong> 8 Meters<br>
-                <strong>Est. Wait Time:</strong> 15 Mins
-            </div>
-        </div>
-
-        <!-- SASSA Card Example -->
+        <!-- SASSA -->
         <div class="card HIGH">
             <div class="dept-header">
                 <span>SASSA</span>
                 <span class="badge badge-HIGH">HIGH</span>
             </div>
+            <div class="live-counter-grid">
+                <div class="counter-box">Now Serving<div class="counter-number" id="serving-SASSA">88</div></div>
+                <div class="counter-box">Total Queue<div class="counter-number" id="total-SASSA">124</div></div>
+            </div>
             <div class="details">
                 <strong>Branch:</strong> CBD Local Office<br>
-                <strong>Line Length:</strong> 42 Meters<br>
+                <strong>Physical Line:</strong> ~42 Meters<br>
                 <strong>Est. Wait Time:</strong> 110 Mins
             </div>
             <div class="warning-text">⚠️ Spilling onto public pavement</div>
+            <button class="join-line-btn" onclick="joinQueue('SASSA', 'SASSA')">🎟️ Join Virtual Queue</button>
         </div>
 
-        <!-- Home Affairs Card Example -->
+        <!-- Home Affairs -->
         <div class="card CRITICAL">
             <div class="dept-header">
                 <span>HOME AFFAIRS</span>
                 <span class="badge badge-CRITICAL">CRITICAL</span>
             </div>
+            <div class="live-counter-grid">
+                <div class="counter-box">Now Serving<div class="counter-number" id="serving-HOME">310</div></div>
+                <div class="counter-box">Total Queue<div class="counter-number" id="total-HOME">395</div></div>
+            </div>
             <div class="details">
                 <strong>Branch:</strong> Barrack Street<br>
-                <strong>Line Length:</strong> 65 Meters<br>
+                <strong>Physical Line:</strong> ~65 Meters<br>
                 <strong>Est. Wait Time:</strong> 180 Mins
             </div>
             <div class="warning-text">⚠️ Spilling onto public pavement</div>
+            <button class="join-line-btn" onclick="joinQueue('HOME AFFAIRS', 'HOME')">🎟️ Join Virtual Queue</button>
         </div>
 
-        <!-- SARS Card Example -->
-        <div class="card LOW">
+        <!-- Housing Department -->
+        <div class="card MEDIUM">
             <div class="dept-header">
-                <span>SARS</span>
-                <span class="badge badge-LOW">LOW</span>
+                <span>HOUSING DEPARTMENT</span>
+                <span class="badge badge-MEDIUM">MEDIUM</span>
+            </div>
+            <div class="live-counter-grid">
+                <div class="counter-box">Now Serving<div class="counter-number" id="serving-HOUSING">45</div></div>
+                <div class="counter-box">Total Queue<div class="counter-number" id="total-HOUSING">62</div></div>
             </div>
             <div class="details">
-                <strong>Branch:</strong> Lower Long Street<br>
-                <strong>Line Length:</strong> 12 Meters<br>
-                <strong>Est. Wait Time:</strong> 25 Mins
+                <strong>Branch:</strong> Civic Centre Concourse<br>
+                <strong>Physical Line:</strong> ~24 Meters<br>
+                <strong>Est. Wait Time:</strong> 55 Mins
             </div>
+            <button class="join-line-btn" onclick="joinQueue('HOUSING DEPARTMENT', 'HOUSING')">🎟️ Join Virtual Queue</button>
         </div>
     </div>
 
-    <!-- Quick Actions for Guard on Patrol -->
-    <a href="#" class="report-btn" onclick="alert('This will open the reporting form for guards!')">
-        ➕ Submit New Patrol Log
-    </a>
+    <!-- Fixed Guard Action Footer Button -->
+    <div class="btn-container">
+        <button class="report-btn" onclick="alert('Guard Patrol Reporting Form Triggered')">➕ Submit New Patrol Log</button>
+    </div>
 
-</body>
-</html>
+    <script>
+        // Store user ticket state locally
+        let myActiveQueue = null;
+        let myTicketNumber = null;
+
+        // Function allowing user to join a specific line
+        function joinQueue(deptFullName, deptCode) {
+            if (myActiveQueue) {
+                alert(`You are already in queue for ${myActiveQueue}. Leave that line before joining a new one.`);
+                return;
+            }
+
+            // Get current max ticket number and issue next numerical slot
+            const totalEl = document.getElementById(`total-${deptCode}`);
+            let currentTotal = parseInt(totalEl.innerText);
+            currentTotal += 1;
+            totalEl.innerText = currentTotal;
+
+            myActiveQueue = deptFullName;
+            myTicketNumber = currentTotal;
+
+            // Show updated top tracking banner
+            document.getElementById('myDept').innerText = deptCode;
+            document.getElementById('myNum').innerText = "#" + myTicketNumber;
+            updatePeopleAhead(deptCode);
