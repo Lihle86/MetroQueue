@@ -28,12 +28,11 @@
             margin-bottom: 25px;
         }
         
-        /* Ticket Info Strip if you are in line */
         .my-ticket-banner {
             display: none;
             background: #2563eb;
             color: white;
-            padding: 12px;
+            padding: 14px;
             border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
@@ -74,7 +73,6 @@
         .badge-MEDIUM { background-color: #eab308; }
         .badge-LOW { background-color: #22c55e; }
 
-        /* Counter tracking boxes inside cards */
         .live-counter-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -100,7 +98,6 @@
             margin-top: 12px;
             font-size: 14px;
             color: #475569;
-            line-height: 1.5;
         }
         .warning-text {
             color: #dc2626;
@@ -125,32 +122,83 @@
             font-size: 14px;
             margin-top: 12px;
             cursor: pointer;
-            transition: background 0.2s;
         }
-        .join-line-btn:hover { background-color: #1e293b; }
 
         .btn-container {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: linear-gradient(to top, #f4f6f9 80%, rgba(244,246,249,0));
+            background: #f4f6f9;
             padding: 15px 0;
             display: flex;
             justify-content: center;
+            gap: 10px;
             z-index: 100;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
         }
         .report-btn {
-            width: 90%;
+            width: 45%;
             background-color: #2563eb;
             color: white;
-            text-align: center;
-            padding: 14px;
             border-radius: 10px;
             font-weight: 700;
             border: none;
+            padding: 14px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .guard-portal-btn {
+            width: 45%;
+            background-color: #475569;
+            color: white;
+            border-radius: 10px;
+            font-weight: 700;
+            border: none;
+            padding: 14px;
+            cursor: pointer;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 200; 
+            left: 0; top: 0; width: 100%; height: 100%; 
+            background-color: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(4px);
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 24px;
+            border-radius: 16px;
+            width: 85%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; }
+        
+        .guard-list-item {
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #2563eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .serve-btn {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -159,15 +207,12 @@
     <h1>MetroQueue</h1>
     <div class="subtitle">Cape Town CBD Live Line Monitor</div>
 
-    <!-- Active Ticket Display Banner -->
     <div id="ticketBanner" class="my-ticket-banner">
-        🎟️ Your Ticket for <span id="myDept">--</span>: <span id="myNum">#--</span> 
+        🎟️ Your Ticket (<span id="myUserFull">--</span>) for <span id="myDept">--</span>: <span id="myNum">#--</span> 
         (People Ahead: <span id="myWait">--</span>)
     </div>
 
-    <!-- Live Feed Container -->
     <div id="queue-feed">
-        
         <!-- Department of Labour -->
         <div class="card HIGH">
             <div class="dept-header">
@@ -180,11 +225,9 @@
             </div>
             <div class="details">
                 <strong>Branch:</strong> Thomas Boydell Building (Parade St)<br>
-                <strong>Physical Line:</strong> ~38 Meters <br>
                 <strong>Est. Wait Time:</strong> 120 Mins
             </div>
-            <div class="warning-text">⚠️ Spilling onto public pavement</div>
-            <button class="join-line-btn" onclick="joinQueue('DEPARTMENT OF LABOUR', 'LABOUR')">🎟️ Join Virtual Queue</button>
+            <button class="join-line-btn" onclick="openRegistration('DEPARTMENT OF LABOUR', 'LABOUR')">🎟️ Register & Join Queue</button>
         </div>
 
         <!-- SASSA -->
@@ -199,78 +242,42 @@
             </div>
             <div class="details">
                 <strong>Branch:</strong> CBD Local Office<br>
-                <strong>Physical Line:</strong> ~42 Meters<br>
                 <strong>Est. Wait Time:</strong> 110 Mins
             </div>
-            <div class="warning-text">⚠️ Spilling onto public pavement</div>
-            <button class="join-line-btn" onclick="joinQueue('SASSA', 'SASSA')">🎟️ Join Virtual Queue</button>
-        </div>
-
-        <!-- Home Affairs -->
-        <div class="card CRITICAL">
-            <div class="dept-header">
-                <span>HOME AFFAIRS</span>
-                <span class="badge badge-CRITICAL">CRITICAL</span>
-            </div>
-            <div class="live-counter-grid">
-                <div class="counter-box">Now Serving<div class="counter-number" id="serving-HOME">310</div></div>
-                <div class="counter-box">Total Queue<div class="counter-number" id="total-HOME">395</div></div>
-            </div>
-            <div class="details">
-                <strong>Branch:</strong> Barrack Street<br>
-                <strong>Physical Line:</strong> ~65 Meters<br>
-                <strong>Est. Wait Time:</strong> 180 Mins
-            </div>
-            <div class="warning-text">⚠️ Spilling onto public pavement</div>
-            <button class="join-line-btn" onclick="joinQueue('HOME AFFAIRS', 'HOME')">🎟️ Join Virtual Queue</button>
-        </div>
-
-        <!-- Housing Department -->
-        <div class="card MEDIUM">
-            <div class="dept-header">
-                <span>HOUSING DEPARTMENT</span>
-                <span class="badge badge-MEDIUM">MEDIUM</span>
-            </div>
-            <div class="live-counter-grid">
-                <div class="counter-box">Now Serving<div class="counter-number" id="serving-HOUSING">45</div></div>
-                <div class="counter-box">Total Queue<div class="counter-number" id="total-HOUSING">62</div></div>
-            </div>
-            <div class="details">
-                <strong>Branch:</strong> Civic Centre Concourse<br>
-                <strong>Physical Line:</strong> ~24 Meters<br>
-                <strong>Est. Wait Time:</strong> 55 Mins
-            </div>
-            <button class="join-line-btn" onclick="joinQueue('HOUSING DEPARTMENT', 'HOUSING')">🎟️ Join Virtual Queue</button>
+            <button class="join-line-btn" onclick="openRegistration('SASSA', 'SASSA')">🎟️ Register & Join Queue</button>
         </div>
     </div>
 
-    <!-- Fixed Guard Action Footer Button -->
+    <!-- Dual Control Footer Options -->
     <div class="btn-container">
-        <button class="report-btn" onclick="alert('Guard Patrol Reporting Form Triggered')">➕ Submit New Patrol Log</button>
+        <button class="guard-portal-btn" onclick="openGuardPortal()">🛡️ Entrance Guard Portal</button>
+        <button class="report-btn" onclick="alert('Patrol Report Opened')">➕ Patrol Log</button>
     </div>
 
-    <script>
-        // Store user ticket state locally
-        let myActiveQueue = null;
-        let myTicketNumber = null;
+    <!-- Citizen Registration Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-top:0">Enter Your Identity Details</h3>
+            <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label>Surname</label>
+                    <input type="text" id="surname" required>
+                </div>
+                <button type="submit" style="width:100%; padding:12px; background:#0f172a; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Secure My Ticket Slot</button>
+                <button type="button" onclick="closeModal('registerModal')" style="width:100%; padding:10px; background:#e2e8f0; color:#475569; border:none; border-radius:8px; font-weight:bold; margin-top:8px; cursor:pointer;">Cancel</button>
+            </form>
+        </div>
+    </div>
 
-        // Function allowing user to join a specific line
-        function joinQueue(deptFullName, deptCode) {
-            if (myActiveQueue) {
-                alert(`You are already in queue for ${myActiveQueue}. Leave that line before joining a new one.`);
-                return;
-            }
-
-            // Get current max ticket number and issue next numerical slot
-            const totalEl = document.getElementById(`total-${deptCode}`);
-            let currentTotal = parseInt(totalEl.innerText);
-            currentTotal += 1;
-            totalEl.innerText = currentTotal;
-
-            myActiveQueue = deptFullName;
-            myTicketNumber = currentTotal;
-
-            // Show updated top tracking banner
-            document.getElementById('myDept').innerText = deptCode;
-            document.getElementById('myNum').innerText = "#" + myTicketNumber;
-            updatePeopleAhead(deptCode);
+    <!-- Entrance Guard Verification View Modal -->
+    <div id="guardModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-top:0">Main Entrance Access Verification</h3>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px;">Verify the identity matches the citizen's paperwork before admitting them inside.</p>
+            <div id="guardListArea">
+                <!-- Registered users will dynamically appear inside here -->
+            </div>
