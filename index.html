@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetroQueue SA</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+
+    <header class="app-header">
+        <h1>MetroQueue SA</h1>
+        <p>National Public Service Queue Monitor</p>
+    </header>
+
+    <div id="ticketBanner" class="ticket-banner"></div>
+
+    <!-- HOME PAGE -->
+    <section id="page-home" class="page active">
+        <div class="hero-card">
+            <h2>Stop Waiting Blindly</h2>
+            <p>
+                See live queues, report poor service, monitor office opening times,
+                and help family members from anywhere in South Africa.
+            </p>
+        </div>
+
+        <div class="menu-grid">
+            <button class="menu-card blue" data-page="add-office">
+                <span>➕</span>
+                <strong>Add Office</strong>
+                <small>Register a clinic, SASSA, Home Affairs or municipal office</small>
+            </button>
+
+            <button class="menu-card green" data-page="monitor">
+                <span>📊</span>
+                <strong>Live Queue Monitor</strong>
+                <small>View queues, people served and waiting times</small>
+            </button>
+
+            <button class="menu-card red" data-page="complaints">
+                <span>⚠️</span>
+                <strong>Report Problem</strong>
+                <small>Report late opening, rain, delays or bad service</small>
+            </button>
+
+            <button class="menu-card dark" data-page="guard">
+                <span>🛡️</span>
+                <strong>Guard Portal</strong>
+                <small>Update queue numbers and opening times</small>
+            </button>
+        </div>
+
+        <div class="info-card">
+            <h3>Eastern Cape Priority</h3>
+            <p>
+                MetroQueue SA helps identify offices where citizens are forced to wait
+                outside in rain, heat or unsafe conditions. It also helps municipalities
+                see whether offices start serving the public on time.
+            </p>
+        </div>
+    </section>
+
+    <!-- ADD OFFICE PAGE -->
+    <section id="page-add-office" class="page">
+        <div class="page-title">
+            <button class="back-btn" data-page="home">⬅️ Home</button>
+            <h2>Add Government Office</h2>
+        </div>
+
+        <div class="card">
+
+            <!-- STEP 1 -->
+            <div id="step-1" class="wizard-step active">
+                <p class="step-indicator">Step 1 of 3</p>
+                <h3>Select Province</h3>
+
+                <select id="officeProvince" class="input-field">
+                    <option value="">-- Choose Province --</option>
+                    <option>Eastern Cape</option>
+                    <option>Free State</option>
+                    <option>Gauteng</option>
+                    <option>KwaZulu-Natal</option>
+                    <option>Limpopo</option>
+                    <option>Mpumalanga</option>
+                    <option>North West</option>
+                    <option>Northern Cape</option>
+                    <option>Western Cape</option>
+                </select>
+
+                <button class="btn primary full" id="toStep2">Next ➡️</button>
+            </div>
+
+            <!-- STEP 2 -->
+            <div id="step-2" class="wizard-step">
+                <p class="step-indicator">Step 2 of 3</p>
+                <h3>Enter Location</h3>
+
+                <label class="label">Town, Township or Suburb</label>
+                <input type="text" id="officeTown" class="input-field" placeholder="Example: Lusikisiki">
+
+                <div class="row">
+                    <button class="btn grey" id="backToStep1">⬅️ Back</button>
+                    <button class="btn primary" id="toStep3">Next ➡️</button>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div id="step-3" class="wizard-step">
+                <p class="step-indicator">Step 3 of 3</p>
+                <h3>Office Details</h3>
+
+                <label class="label">Department</label>
+                <select id="officeDepartment" class="input-field">
+                    <option value="">-- Choose Department --</option>
+                    <option>Home Affairs</option>
+                    <option>SASSA</option>
+                    <option>Community Clinic</option>
+                    <option>General Hospital</option>
+                    <option>SARS</option>
+                    <option>Department of Education</option>
+                    <option>Municipal Office</option>
+                </select>
+
+                <label class="label">Office / Branch Name</label>
+                <input type="text" id="officeName" class="input-field" placeholder="Example: Main Street Branch">
+
+                <label class="label">Official Opening Time</label>
+                <input type="time" id="officeOpeningTime" class="input-field" value="08:00">
+
+                <label class="label">Does the office have shelter for queues?</label>
+                <select id="officeShelter" class="input-field">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+
+                <div class="row">
+                    <button class="btn grey" id="backToStep2">⬅️ Back</button>
+                    <button class="btn success" id="saveOffice">✅ Add Office</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- LIVE MONITOR PAGE -->
+    <section id="page-monitor" class="page">
+        <div class="page-title">
+            <button class="back-btn" data-page="home">⬅️ Home</button>
+            <h2>Live Queue Monitor</h2>
+        </div>
+
+        <div id="officeList" class="office-list"></div>
+    </section>
+
+    <!-- COMPLAINTS PAGE -->
+    <section id="page-complaints" class="page">
+        <div class="page-title">
+            <button class="back-btn" data-page="home">⬅️ Home</button>
+            <h2>Report a Problem</h2>
+        </div>
+
+        <div class="card">
+            <p class="note">
+                You may report for yourself or for a parent, grandparent or family member
+                waiting at an office in another province.
+            </p>
+
+            <label class="label">Your Full Name</label>
+            <input type="text" id="complainantName" class="input-field" placeholder="Your name">
+
+            <label class="label">Your Province</label>
+            <select id="complainantProvince" class="input-field">
+                <option value="">-- Choose Province --</option>
+                <option>Eastern Cape</option>
+                <option>Free State</option>
+                <option>Gauteng</option>
+                <option>KwaZulu-Natal</option>
+                <option>Limpopo</option>
+                <option>Mpumalanga</option>
+                <option>North West</option>
+                <option>Northern Cape</option>
+                <option>Western Cape</option>
+            </select>
+
+            <label class="label">Name of Person Affected</label>
+            <input type="text" id="affectedPerson" class="input-field" placeholder="Example: My mother">
+
+            <label class="label">Office Being Reported</label>
+            <select id="complaintOffice" class="input-field">
+                <option value="">-- Choose Office --</option>
+            </select>
+
+            <label class="label">Problem Type</label>
+            <select id="complaintType" class="input-field">
+                <option value="">-- Choose Problem --</option>
+                <option>Office opened late</option>
+                <option>Staff absent</option>
+                <option>Queue not moving</option>
+                <option>People standing in rain</option>
+                <option>No shelter</option>
+                <option>Poor treatment</option>
+                <option>Suspected queue jumping</option>
+                <option>Other</option>
+            </select>
+
+            <label class="label">Describe What Happened</label>
+            <textarea id="complaintDetails" class="input-field" rows="4"
+                placeholder="Explain the problem clearly. Do not include passwords or banking details."></textarea>
+
+            <button class="btn danger full" id="submitComplaint">🚨 Submit Complaint</button>
+        </div>
+
+        <div class="card">
+            <h3>Complaint Records</h3>
+            <div id="complaintList"></div>
+        </div>
+    </section>
+
+    <!-- GUARD PORTAL -->
+    <section id="page-guard" class="page">
+        <div class="page-title">
+            <button class="back-btn" data-page="home">⬅️ Home</button>
+            <h2>Guard Portal</h2>
+        </div>
+
+        <div class="card">
+            <p class="note">
+                Test PIN: <strong>1234</strong>
+            </p>
+
+            <label class="label">Select Office</label>
+            <select id="guardOffice" class="input-field">
+                <option value="">-- Choose Office --</option>
+            </select>
+
+            <label class="label">Now Serving</label>
+            <input type="number" id="guardServing" class="input-field" min="0">
+
+            <label class="label">Total People in Queue</label>
+            <input type="number" id="guardQueue" class="input-field" min="0">
+
+            <label class="label">First Person Served At</label>
+            <input type="time" id="guardFirstServed" class="input-field">
+
+            <button class="btn primary full" id="updateQueue">Update Live Queue</button>
+        </div>
+    </section>
+
+    <footer class="app-footer">
+        <p>MetroQueue SA — Community Accountability Technology</p>
+    </footer>
+
+</body>
+</html>
