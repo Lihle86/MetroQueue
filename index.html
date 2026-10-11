@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MetroQueue SA - National Public Service Monitor</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
     <h1>MetroQueue SA</h1>
     <div class="subtitle">National Public Service Monitor</div>
-    
-    <!-- Dynamic Real-time Voucher Banner -->
     <div id="ticketBanner" class="my-ticket-banner"></div>
 
     <!-- 3-STEP SEARCH ENGINE WIZARD -->
     <div class="search-engine-box">
         <h3>📍 Advanced Regional Search Engine</h3>
         
-        <!-- STEP 1: PROVINCES -->
+        <!-- STEP 1 -->
         <div id="step-1" class="wizard-step active">
             <div class="step-indicator">Step 1 of 3: Regional Scope</div>
-            <label class="input-label" for="searchProvince">Select Your Province:</label>
+            <label class="input-label">Select Your Province:</label>
             <select id="searchProvince" class="input-field">
                 <option value="">-- Choose Province --</option>
                 <option value="Western Cape">Western Cape</option>
@@ -35,25 +23,25 @@
                 <option value="Northern Cape">Northern Cape</option>
             </select>
             <div class="wizard-nav-buttons">
-                <button type="button" class="nav-btn btn-next" id="nextToStep2">Next: Location ➡️</button>
+                <button type="button" class="nav-btn btn-next" onclick="goToStep(2)">Next: Location ➡️</button>
             </div>
         </div>
 
-        <!-- STEP 2: LOCAL TOWN OR DISTRICT -->
+        <!-- STEP 2 -->
         <div id="step-2" class="wizard-step">
             <div class="step-indicator">Step 2 of 3: Local District</div>
-            <label class="input-label" for="searchTown">Type City, Suburb, or Township:</label>
+            <label class="input-label">Type City, Suburb, or Township:</label>
             <input type="text" id="searchTown" class="input-field" placeholder="e.g., Lusikisiki, Soweto, Khayelitsha">
             <div class="wizard-nav-buttons">
-                <button type="button" class="nav-btn btn-back" id="backToStep1">⬅️ Back</button>
-                <button type="button" class="nav-btn btn-next" id="nextToStep3">Next: Select Agency ➡️</button>
+                <button type="button" class="nav-btn btn-back" onclick="goToStep(1)">⬅️ Back</button>
+                <button type="button" class="nav-btn btn-next" onclick="goToStep(3)">Next: Select Agency ➡️</button>
             </div>
         </div>
 
-        <!-- STEP 3: AGENCY & SPECIFIC OFFICE SELECTION -->
+        <!-- STEP 3 -->
         <div id="step-3" class="wizard-step">
             <div class="step-indicator">Step 3 of 3: Service Facility</div>
-            <label class="input-label" for="searchDeptType">Select Public Department Category:</label>
+            <label class="input-label">Select Public Department Category:</label>
             <select id="searchDeptType" class="input-field">
                 <option value="">-- Choose Department --</option>
                 <option value="🏥 Community Clinic">🏥 Community Clinic</option>
@@ -64,33 +52,24 @@
                 <option value="🎓 Department of Education">🎓 Department of Education</option>
             </select>
             
-            <label class="input-label" for="searchSpecificFacility">Type Specific Branch Name:</label>
-            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="e.g., Main Street Branch, Site B CHC">
+            <label class="input-label">Type Specific Branch Name:</label>
+            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="e.g., Main Street CHC, Local Village Office">
             
             <div class="wizard-nav-buttons">
-                <button type="button" class="nav-btn btn-back" id="backToStep2">⬅️ Back</button>
+                <button type="button" class="nav-btn btn-back" onclick="goToStep(2)">⬅️ Back</button>
                 <button type="button" id="executeSearchBtn" class="nav-btn btn-submit">🔍 Query Live Feed</button>
             </div>
         </div>
     </div>
 
-    <!-- DYNAMIC DASHBOARD CARDS STREAM CONTAINER -->
+    <!-- FEED CONTAINER TRAY -->
     <div id="dynamicFeedsContainer">
-        <!-- Default Presentable Eastern Cape Accountability Case-Study Template -->
+        <!-- Default Eastern Cape Showcase Card -->
         <div class="card CRITICAL" data-province="Eastern Cape" data-town="Lusikisiki" data-office="Lusikisiki Main Street Branch">
-            <div class="dept-header">
-                <span>🪪 Department of Home Affairs</span>
-                <span class="badge badge-CRITICAL">CRITICAL</span>
-            </div>
+            <div class="dept-header"><span>🪪 Department of Home Affairs</span><span class="badge badge-CRITICAL">CRITICAL</span></div>
             <div class="live-counter-grid">
-                <div class="counter-box">
-                    <div>Now Serving</div>
-                    <div class="counter-number serving-num">105</div>
-                </div>
-                <div class="counter-box">
-                    <div>Total Queue</div>
-                    <div class="counter-number queue-num">340</div>
-                </div>
+                <div class="counter-box"><div>Now Serving</div><div class="counter-number serving-num">105</div></div>
+                <div class="counter-box"><div>Total Queue</div><div class="counter-number queue-num">340</div></div>
             </div>
             <div class="details">
                 <strong>Province:</strong> Eastern Cape<br>
@@ -98,38 +77,71 @@
                 <strong>Branch Office:</strong> Lusikisiki Main Street Branch<br>
                 <strong>Est. Wait Time:</strong> <span class="wait-time">705</span> Mins
             </div>
-            <div class="warning-text">⚠️ ALERT: Citizens standing unsheltered outside in rain. Numbers static.</div>
-            <div>
-                <span class="rating-metrics-display">⭐ Live Office Rating: <span class="rate-percentage">35</span>% Satisfaction</span>
-            </div>
-
-            <!-- PIN Secured Door Access Control Station Panel Area -->
+            <div class="warning-text" style="color:#b91c1c; background:#fef2f2; padding:6px; border-radius:8px; margin-top:12px; font-weight:700; font-size:13px;">⚠️ ALERT: Citizens standing unsheltered outside in rain. Numbers static.</div>
+            <div><span class="rating-metrics-display">⭐ Live Office Rating: <span class="rate-percentage">35</span>% Satisfaction</span></div>
+            
             <div class="guard-control-station">
                 <div class="guard-title">🛡️ Entrance Guard Control Station</div>
                 <div class="guard-btn-row">
-                    <button type="button" class="shift-btn nextBtn">🔊 Next Serving (+1)</button>
-                    <button type="button" class="shift-btn addBtn">Add 5 to Queue</button>
+                    <button type="button" class="shift-btn next" onclick="shiftServingNumber(this)">🔊 Next Serving (+1)</button>
+                    <button type="button" class="shift-btn" onclick="adjustTotalQueue(this, 5)">Add 5</button>
                 </div>
                 <div class="guard-btn-row">
-                    <button type="button" class="shift-btn reduceBtn">Reduce 5 People</button>
-                    <button type="button" class="shift-btn resetBtn">Reset Counters</button>
+                    <button type="button" class="shift-btn" onclick="adjustTotalQueue(this, -5)">Reduce 5</button>
+                    <button type="button" class="shift-btn" onclick="resetCardStats(this)">Reset</button>
                 </div>
             </div>
 
             <button type="button" class="join-line-btn">🎟 Book Ticket & Join Line</button>
             <div class="civic-actions-wrapper">
-                <button type="button" class="complaint-btn">⚠️ Report Staff / Issue</button>
-                <button type="button" class="rate-btn">⭐ Rate Office</button>
+                <button type="button" class="complaint-btn">⚠️ Report Issue</button>
+                <button type="button" class="rate-btn">⭐ Rate</button>
             </div>
         </div>
     </div>
 
-    <!-- Sticky Bottom App Utilities Bar -->
     <div class="btn-container">
         <button type="button" class="report-btn">📢 Report Live Status</button>
         <button type="button" class="guard-portal-btn">🛡️ Guard Portal</button>
     </div>
 
-    <script src="app.js"></script>
-</body>
-</html>
+    <!-- CODE CONTROLLER LOGIC PIPELINE -->
+    <script>
+        function goToStep(step) {
+            if (step === 2 && !document.getElementById('searchProvince').value) return alert("Select a Province first.");
+            if (step === 3 && !document.getElementById('searchTown').value.trim()) return alert("Type your town/suburb location first.");
+            document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-' + step).classList.add('active');
+        }
+
+        document.getElementById('executeSearchBtn').addEventListener('click', function() {
+            const p = document.getElementById('searchProvince').value;
+            const t = document.getElementById('searchTown').value.trim();
+            const d = document.getElementById('searchDeptType').value;
+            const f = document.getElementById('searchSpecificFacility').value.trim();
+            if (!p || !t || !d || !f) return alert("Please fill in all inputs first.");
+
+            const h = `<div class="card HIGH" data-province="${p}" data-town="${t}" data-office="${f}"><div class="dept-header"><span>${d}</span><span class="badge badge-HIGH">HIGH</span></div><div class="live-counter-grid"><div class="counter-box"><div>Now Serving</div><div class="counter-number serving-num">1</div></div><div class="counter-box"><div>Total Queue</div><div class="counter-number queue-num">15</div></div></div><div class="details"><strong>Province:</strong> ${p}<br><strong>Town/Suburb:</strong> ${t}<br><strong>Branch Office:</strong> ${f}<br><strong>Est. Wait Time:</strong> <span class="wait-time">42</span> Mins</div><div><span class="rating-metrics-display">⭐ Live Office Rating: <span class="rate-percentage">100</span>% Satisfaction</span></div><div class="guard-control-station"><div class="guard-title">🛡️ Entrance Guard Control Station</div><div class="guard-btn-row"><button type="button" class="shift-btn next" onclick="shiftServingNumber(this)">🔊 Next Serving (+1)</button><button type="button" class="shift-btn" onclick="adjustTotalQueue(this, 5)">Add 5</button></div><div class="guard-btn-row"><button type="button" class="shift-btn" onclick="adjustTotalQueue(this, -5)">Reduce 5</button><button type="button" class="shift-btn" onclick="resetCardStats(this)">Reset</button></div></div><button type="button" class="join-line-btn">🎟 Book Ticket & Join Line</button><div class="civic-actions-wrapper"><button type="button" class="complaint-btn">⚠️ Report Issue</button><button type="button" class="rate-btn">⭐ Rate</button></div></div>`;
+            
+            document.getElementById('dynamicFeedsContainer').insertAdjacentHTML('afterbegin', h);
+            attachCardEvents();
+            document.getElementById('searchTown').value = "";
+            document.getElementById('searchSpecificFacility').value = "";
+            goToStep(1);
+            alert("Card generated successfully!");
+        });
+
+        function shiftServingNumber(b) {
+            const pin = prompt("Enter Guard Access PIN:");
+            if (pin !== "1234") return alert("Invalid PIN.");
+            const c = b.closest('.card'), s = c.querySelector('.serving-num'), q = c.querySelector('.queue-num');
+            let cs = parseInt(s.innerText) || 0, cq = parseInt(q.innerText) || 0;
+            if (cs >= cq) return alert("All citizens served!");
+            s.innerText = cs + 1;
+            calcWait(c);
+        }
+
+        function adjustTotalQueue(b, a) {
+            const pin = prompt("Enter Guard Access PIN:");
+            if (pin !== "1234") return alert("Invalid PIN.");
+            const c = b.closest('.card'), q = c.querySelector('.queue-num');
