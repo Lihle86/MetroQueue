@@ -3,337 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MetroQueue SA - National Public Service Monitor</title>
+    <title>MetroQueue SA - National Monitor</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 16px;
-            background-color: #f4f6f9;
-            color: #1e293b;
-            padding-bottom: 100px;
-            -webkit-text-size-adjust: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0; padding: 16px; background-color: #f4f6f9; color: #1e293b; padding-bottom: 110px;
         }
-        h1 {
-            font-size: 26px;
-            color: #0f172a;
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: 4px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #64748b;
-            font-size: 13px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
+        h1 { font-size: 26px; color: #0f172a; text-align: center; margin-top: 10px; font-weight: 800; }
+        .subtitle { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 20px; font-weight: 700; text-transform: uppercase; }
         .my-ticket-banner {
-            display: none;
-            background: #2563eb;
-            color: white;
-            padding: 14px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            display: none; background: #2563eb; color: white; padding: 14px; border-radius: 12px;
+            margin-bottom: 20px; text-align: center; font-weight: bold; font-size: 14px;
         }
-        
-        /* SEARCH WIZARD INTERFACE */
-        .search-engine-box {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-            border: 1px solid #e2e8f0;
-        }
-        .search-engine-box h3 {
-            margin-top: 0;
-            margin-bottom: 16px;
-            color: #0f172a;
-            font-size: 16px;
-            font-weight: 700;
-        }
-        .wizard-step {
-            display: none;
-        }
-        .wizard-step.active {
-            display: block;
-        }
-        .step-indicator {
-            font-size: 12px;
-            font-weight: 700;
-            color: #2563eb;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-        .input-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 8px;
-        }
+        .search-engine-box { background: white; border-radius: 16px; padding: 20px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        .wizard-step { display: none; }
+        .wizard-step.active { display: block; }
+        .step-indicator { font-size: 12px; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 8px; }
+        .input-label { display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 8px; }
         .input-field {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: 2px solid #cbd5e1;
-            background-color: #f8fafc;
-            font-size: 16px;
-            color: #0f172a;
-            box-sizing: border-box;
-            margin-bottom: 12px;
-            font-weight: 500;
+            width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #cbd5e1;
+            background-color: #f8fafc; font-size: 16px; color: #0f172a; box-sizing: border-box; margin-bottom: 12px;
         }
-        .input-field:focus {
-            outline: none;
-            border-color: #2563eb;
-            background-color: #ffffff;
-        }
-
-        /* WIZARD ACTIONS */
-        .wizard-nav-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .nav-btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            border: none;
-        }
-        .btn-back {
-            background-color: #e2e8f0;
-            color: #475569;
-        }
-        .btn-next {
-            background-color: #2563eb;
-            color: white;
-        }
-        .btn-submit {
-            background-color: #16a34a;
-            color: white;
-        }
-
-        /* MONITOR INTERFACE CARDS */
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 18px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            border: 1px solid #e2e8f0;
-            border-left: 8px solid #cbd5e1;
-            position: relative;
-        }
-        .CRITICAL { border-left-color: #ef4444; } 
-        .HIGH { border-left-color: #f97316; }     
-        .MEDIUM { border-left-color: #eab308; }   
-        .LOW { border-left-color: #22c55e; }      
-
-        .dept-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 800;
-            font-size: 17px;
-            color: #0f172a;
-        }
-        .badge {
-            font-size: 11px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            color: white;
-            font-weight: 800;
-        }
-        .badge-CRITICAL { background-color: #ef4444; }
-        .badge-HIGH { background-color: #f97316; }
-        .badge-MEDIUM { background-color: #eab308; }
-        .badge-LOW { background-color: #22c55e; }
-
-        .live-counter-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            background: #f8fafc;
-            padding: 14px;
-            border-radius: 12px;
-            margin-top: 14px;
-            text-align: center;
-        }
-        .counter-box {
-            font-size: 13px;
-            color: #64748b;
-        }
-        .counter-number {
-            font-size: 26px;
-            font-weight: 800;
-            color: #0f172a;
-            margin-top: 4px;
-        }
-        .details {
-            margin-top: 14px;
-            font-size: 14px;
-            color: #334155;
-            line-height: 1.5;
-        }
-        .rating-metrics-display {
-            margin-top: 12px;
-            font-weight: 700;
-            font-size: 13px;
-            color: #16a34a;
-            background: #f0fdf4;
-            padding: 6px 12px;
-            border-radius: 8px;
-            display: inline-block;
-        }
-        .warning-text {
-            color: #b91c1c;
-            font-weight: 700;
-            margin-top: 12px;
-            font-size: 13px;
-            background: #fef2f2;
-            padding: 6px 10px;
-            border-radius: 8px;
-            display: block;
-        }
-
-        /* DOORWAY CONTROLS FOR ENTRANCE GUARDS */
-        .guard-control-station {
-            margin-top: 16px;
-            background: #f8fafc;
-            padding: 14px;
-            border-radius: 12px;
-            border: 2px dashed #cbd5e1;
-        }
-        .guard-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: #475569;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-align: center;
-        }
-        .guard-btn-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .guard-btn-row:last-child { margin-bottom: 0; }
-        .shift-btn {
-            flex: 1;
-            background-color: #64748b;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+        .wizard-nav-buttons { display: flex; gap: 10px; margin-top: 8px; }
+        .nav-btn { flex: 1; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; border: none; }
+        .btn-back { background-color: #e2e8f0; color: #475569; }
+        .btn-next { background-color: #2563eb; color: white; }
+        .btn-submit { background-color: #16a34a; color: white; }
+        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 18px; border: 1px solid #e2e8f0; border-left: 8px solid #cbd5e1; }
+        .CRITICAL { border-left-color: #ef4444; } .HIGH { border-left-color: #f97316; }
+        .dept-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 17px; }
+        .badge { font-size: 11px; padding: 5px 12px; border-radius: 20px; color: white; font-weight: 800; }
+        .badge-CRITICAL { background-color: #ef4444; } .badge-HIGH { background-color: #f97316; }
+        .live-counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f8fafc; padding: 14px; border-radius: 12px; margin-top: 14px; text-align: center; }
+        .counter-box { font-size: 13px; color: #64748b; }
+        .counter-number { font-size: 26px; font-weight: 800; color: #0f172a; margin-top: 4px; }
+        .details { margin-top: 14px; font-size: 14px; color: #334155; line-height: 1.5; }
+        .rating-metrics-display { margin-top: 12px; font-weight: 700; font-size: 13px; color: #16a34a; background: #f0fdf4; padding: 6px 12px; border-radius: 8px; display: inline-block; }
+        .guard-control-station { margin-top: 16px; background: #f8fafc; padding: 14px; border-radius: 12px; border: 2px dashed #cbd5e1; }
+        .guard-title { font-size: 12px; font-weight: 800; color: #475569; margin-bottom: 10px; text-transform: uppercase; text-align: center; }
+        .guard-btn-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .shift-btn { flex: 1; background-color: #64748b; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
         .shift-btn.next { background-color: #0f172a; }
-
-        /* VIRTUAL CHECK-IN PANEL LINKS */
-        .join-line-btn {
-            display: block;
-            width: 100%;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 15px;
-            margin-top: 14px;
-            cursor: pointer;
-        }
-        .civic-actions-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .complaint-btn {
-            background-color: #ef4444;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        .rate-btn {
-            background-color: #22c55e;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        /* PERSISTENT FOOTER DEPLOYMENT BAR */
-        .btn-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #ffffff;
-            padding: 12px 0;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            z-index: 100;
-            box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
-            border-top: 1px solid #e2e8f0;
-        }
-        .report-btn, .guard-portal-btn {
-            width: 44%;
-            color: white;
-            border-radius: 10px;
-            font-weight: 700;
-            border: none;
-            padding: 14px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .report-btn { background-color: #2563eb; }
-        .guard-portal-btn { background-color: #475569; }
+        .join-line-btn { display: block; width: 100%; background-color: #2563eb; color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px; margin-top: 14px; cursor: pointer; }
+        .civic-actions-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+        .complaint-btn { background-color: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
+        .rate-btn { background-color: #22c55e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
+        .btn-container { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; padding: 12px 0; display: flex; justify-content: center; gap: 12px; z-index: 100; border-top: 1px solid #e2e8f0; }
+        .report-btn, .guard-portal-btn { width: 44%; color: white; border-radius: 10px; font-weight: 700; border: none; padding: 14px; font-size: 14px; }
+        .report-btn { background-color: #2563eb; } .guard-portal-btn { background-color: #475569; }
     </style>
 </head>
 <body>
 
     <h1>MetroQueue SA</h1>
-    <div class="subtitle">National Public Service Infrastructure Monitor</div>
-
+    <div class="subtitle">National Public Service Monitor</div>
     <div id="ticketBanner" class="my-ticket-banner"></div>
 
-    <!-- 3-STEP SEARCH ENGINE WIZARD FOR MOUNTED WIDE MOBILE VIEWS -->
+    <!-- 3-STEP SEARCH ENGINE WIZARD -->
     <div class="search-engine-box">
-        <h3>📍 Advanced Regional Search Engine</h3>
-        
-        <!-- STEP 1: SELECT PROVINCE -->
+        <!-- STEP 1: PROVINCE DROP DOWN -->
         <div id="step-1" class="wizard-step active">
             <div class="step-indicator">Step 1 of 3: Regional Scope</div>
             <label class="input-label">Select Your Province:</label>
             <select id="searchProvince" class="input-field">
                 <option value="">-- Choose Province --</option>
-                <option value="Gauteng">Gauteng</option>
                 <option value="Western Cape">Western Cape</option>
+                <option value="Eastern Cape">Eastern Cape</option>
                 <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                <option value="Gauteng">Gauteng</option>
+                <option value="Mpumalanga">Mpumalanga</option>
+                <option value="Limpopo">Limpopo</option>
+                <option value="Free State">Free State</option>
+                <option value="North West">North West</option>
+                <option value="Northern Cape">Northern Cape</option>
+            </select>
+            <div class="wizard-nav-buttons">
+                <button class="nav-btn btn-next" onclick="navigateToStep(2)">Next: Location ➡️</button>
+            </div>
+        </div>
+
+        <!-- STEP 2: TOWN WRITING FIELD -->
+        <div id="step-2" class="wizard-step">
+            <div class="step-indicator">Step 2 of 3: Local District</div>
+            <label class="input-label">Type City, Suburb, or Township:</label>
+            <input type="text" id="searchTown" class="input-field" placeholder="e.g., Mitchells Plain, Soweto, Pretoria">
+            <div class="wizard-nav-buttons">
+                <button class="nav-btn btn-back" onclick="navigateToStep(1)">⬅️ Back</button>
+                <button class="nav-btn btn-next" onclick="navigateToStep(3)">Next: Agency ➡️</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: DEPT SELECT & BRANCH WRITING FIELD -->
+        <div id="step-3" class="wizard-step">
+            <div class="step-indicator">Step 3 of 3: Service Facility</div>
+            <label class="input-label">Select Department Category:</label>
+            <select id="searchDeptType" class="input-field">
+                <option value="">-- Choose Department --</option>
+                <option value="🏥 Community Clinic">🏥 Community Clinic</option>
+                <option value="🏢 General Hospital">🏢 General Hospital</option>
+                <option value="🪪 Department of Home Affairs">🪪 Department of Home Affairs</option>
+                <option value="🎟️ SASSA Branch">🎟️ SASSA Branch</option>
+                <option value="📈 SARS Revenue Office">📈 SARS Revenue Office</option>
+                <option value="🎓 Department of Education">🎓 Department of Education</option>
+            </select>
+            <label class="input-label">Type Specific Branch Name:</label>
+            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="e.g., Khayelitsha CHC, Maponya Mall Office">
+            <div class="wizard-nav-buttons">
+                <button class="nav-btn btn-back" onclick="navigateToStep(2)">⬅️ Back</button>
+                <button id="executeSearchBtn" class="nav-btn btn-submit">🔍 Query Live Feed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MONITOR FEED TRAY CONTAINER -->
+    <div id="dynamicFeedsContainer">
+        <!-- Default Presentable Soweto Showcase Card -->
+        <div class="card CRITICAL" data-province="Gauteng" data-town="Soweto" data-office="Soweto Maponya Branch">
+            <div class="dept-header">
+                <span>🪪 Department of Home Affairs</span>
+                <span class="badge badge-CRITICAL">CRITICAL</span>
+            </div>
+            <div class="live-counter-grid">
+                <div class="counter-box"><div>Now Serving</div><div class="counter-number serving-num">412</div></div>
+                <div class="counter-box"><div>Total Queue</div><div class="counter-number queue-num">580</div></div>
+            </div>
+            <div class="details">
+                <strong>Province:</strong> Gauteng<br>
+                <strong>Town/Suburb:</strong> Soweto<br>
+                <strong>Branch Office:</strong> Soweto Maponya Branch<br>
+                <strong>Est. Wait Time:</strong> <span class="wait-time">504</span> Mins
+            </div>
+            <div><span class="rating-metrics-display">⭐ Live Office Rating: <span class="rate-percentage">68</span>% Satisfaction</span></div>
+            <div class="guard-control-station">
+                <div class="guard-title">🛡️ Entrance Guard Control Station</div>
+                <div class="guard-btn-row">
+                    <button class="shift-btn next" onclick="shiftServingNumber(this)">🔊 Next Serving (+1)</button>
