@@ -1,66 +1,245 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const GUARD_PIN = "1234";
+const GUARD_PIN = "1234";
 
-    let offices = [
-        {
-            province: "Eastern Cape",
-            town: "Lusikisiki",
-            department: "Home Affairs",
-            name: "Lusikisiki Main Street Branch",
-            openingTime: "08:00",
-            shelter: "No",
-            serving: 105,
-            queue: 340,
-            firstServed: "08:24"
-        }
-    ];
+let offices = [
+    {
+        province: "Eastern Cape",
+        town: "Lusikisiki",
+        department: "Home Affairs",
+        name: "Lusikisiki Main Street Branch",
+        openingTime: "08:00",
+        shelter: "No",
+        serving: 105,
+        queue: 340,
+        firstServed: "08:24"
+    }
+];
 
-    let complaints = [];
+let complaints = [];
 
-    function showPage(pageName) {
-        document.querySelectorAll(".page").forEach(function (page) {
-            page.classList.remove("active");
-        });
+/* PAGE OPENING SYSTEM */
+function showPage(pageName) {
+    document.querySelectorAll(".page").forEach(function (page) {
+        page.classList.remove("active");
+    });
 
-        const selectedPage = document.getElementById("page-" + pageName);
+    const selectedPage = document.getElementById("page-" + pageName);
 
-        if (selectedPage) {
-            selectedPage.classList.add("active");
-        }
-
-        if (pageName === "monitor") {
-            renderOffices();
-        }
-
-        if (pageName === "complaints") {
-            fillOfficeDropdowns();
-            renderComplaints();
-        }
-
-        if (pageName === "guard") {
-            fillOfficeDropdowns();
-        }
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+    if (!selectedPage) {
+        alert("Page not found: " + pageName);
+        return;
     }
 
+    selectedPage.classList.add("active");
+
+    if (pageName === "monitor") {
+        renderOffices();
+    }
+
+    if (pageName === "complaints") {
+        fillOfficeDropdowns();
+        renderComplaints();
+    }
+
+    if (pageName === "guard") {
+        fillOfficeDropdowns();
+    }
+
+    window.scrollTo(0, 0);
+}
+
+/* REGISTRATION STEP SYSTEM */
+function changeStep(stepNumber) {
+    document.querySelectorAll(".wizard-step").forEach(function (step) {
+        step.classList.remove("active");
+    });
+
+    const wantedStep = document.getElementById("step-" + stepNumber);
+
+    if (wantedStep) {
+        wantedStep.classList.add("active");
+    }
+}
+
+/* SHOW ALL REGISTERED OFFICES */
+function renderOffices() {
+    const officeList = document.getElementById("officeList");
+
+    if (!officeList) {
+        return;
+    }
+
+    officeList.innerHTML = "";
+
+    if (offices.length === 0) {
+        officeList.innerHTML = `
+            <div class="card">
+                <h3>No offices added yet</h3>
+                <p>Please use Add Office to create your first queue monitor.</p>
+            </div>
+        `;
+        return;
+    }
+
+    offices.forEach(function (office, index) {
+        const peopleWaiting = Math.max(0, office.queue - office.serving);
+        const estimatedWait = peopleWaiting * 3;
+        const noShelter = office.shelter === "No";
+        const notMoving = office.queue > 0 && office.serving === 0;
+        const needsAttention = noShelter || notMoving;
+
+        const officeCard = document.createElement("div");
+
+        officeCard.className = needsAttention
+            ? "office-card warning"
+            : "office-card";
+
+        officeCard.innerHTML = `
+            <div class="office-header">
+                <div>
+                    <strong>${office.department}</strong>
+                    <small>${office.name}</small>
+                </div>
+
+                <span class="badge ${needsAttention ? "warning" : ""}">
+                    ${needsAttention ? "ATTENTION" : "LIVE"}
+                </span>
+            </div>
+
+            <div class="counter-grid">
+                <div class="counter-box">
+                    <small>NOW SERVING</small>
+                    <strong>${office.serving}</strong>
+                </div>
+
+                <div class="counter-box">
+                    <small>PEOPLE WAITING</small>
+                    <strong>${peopleWaiting}</strong>
+                </div>
+            </div>
+
+            <div class="office-details">
+                <strong>Location:</strong> ${office.town}, ${office.province}<br>
+                <strong>Office opens:</strong> ${office.openingTime}<br>
+                <strong>First person served:</strong> ${office.firstServed || "Not recorded"}<br>
+                <strong>Estimated wait:</strong> ${estimatedWait} minutes<br>
+                <strong>Queue shelter:</strong> ${office.shelter}
+            </div>
+
+            ${noShelter ? `
+                <p class="note">
+                    ⚠️ Weather warning: people may be waiting outside without shelter.
+                </p>
+            ` : ""}
+
+            ${notMoving ? `
+                <p class="note">
+                    ⚠️ Queue has not started moving yet.
+                </p>
+            ` : ""}
+
+            <button
+                type="button"
+                class="btn danger full report-office-btn"
+                data-office-index="${index}"
+            >
+                ⚠️ Report a Problem at This Office
+            </button>
+        `;
+
+        officeList.appendChild(officeCard);
+    });
+
+    document.querySelectorAll(".report-office-btn").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const officeIndex = Number(button.dataset.officeIndex);
+            const selectedOffice = offices[officeIndex];
+
+            fillOfficeDropdowns();
+
+            const complaintOffice = document.getElementById("complaintOffice");
+
+            if (complaintOffice && selectedOffice) {
+                complaintOffice.value = selectedOffice.name;
+            }
+
+            showPage("complaints");
+        });
+    });
+}
+
+/* PUT OFFICE NAMES INTO COMPLAINT AND GUARD DROPDOWNS */
+function fillOfficeDropdowns() {
+    const complaintOffice = document.getElementById("complaintOffice");
+    const guardOffice = document.getElementById("guardOffice");
+
+    if (!complaintOffice || !guardOffice) {
+        return;
+    }
+
+    complaintOffice.innerHTML = `<option value="">-- Choose Office --</option>`;
+    guardOffice.innerHTML = `<option value="">-- Choose Office --</option>`;
+
+    offices.forEach(function (office) {
+        const displayName = `${office.name} — ${office.town}, ${office.province}`;
+
+        const complaintOption = document.createElement("option");
+        complaintOption.value = office.name;
+        complaintOption.textContent = displayName;
+        complaintOffice.appendChild(complaintOption);
+
+        const guardOption = document.createElement("option");
+        guardOption.value = office.name;
+        guardOption.textContent = displayName;
+        guardOffice.appendChild(guardOption);
+    });
+}
+
+/* SHOW COMPLAINT RECORDS */
+function renderComplaints() {
+    const complaintList = document.getElementById("complaintList");
+
+    if (!complaintList) {
+        return;
+    }
+
+    complaintList.innerHTML = "";
+
+    if (complaints.length === 0) {
+        complaintList.innerHTML = "<p>No complaints submitted yet.</p>";
+        return;
+    }
+
+    complaints.forEach(function (complaint) {
+        const item = document.createElement("div");
+
+        item.className = "complaint-item";
+
+        item.innerHTML = `
+            <strong>${complaint.type}</strong>
+            <strong>Reference:</strong> ${complaint.reference}<br>
+            <strong>Office:</strong> ${complaint.office}<br>
+            <strong>Person affected:</strong> ${complaint.affectedPerson}<br>
+            <strong>Reported by:</strong> ${complaint.complainant}, ${complaint.province}<br>
+            <strong>Details:</strong> ${complaint.details}<br>
+            <strong>Submitted:</strong> ${complaint.submittedAt}
+        `;
+
+        complaintList.appendChild(item);
+    });
+}
+
+/* START BUTTON ACTIONS ONLY AFTER THE PAGE IS READY */
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* HOME BLOCKS AND HOME BUTTONS */
     document.querySelectorAll("[data-page]").forEach(function (button) {
         button.addEventListener("click", function () {
-            showPage(button.dataset.page);
+            const pageName = button.dataset.page;
+            showPage(pageName);
         });
     });
 
-    function changeStep(stepNumber) {
-        document.querySelectorAll(".wizard-step").forEach(function (step) {
-            step.classList.remove("active");
-        });
-
-        document.getElementById("step-" + stepNumber).classList.add("active");
-    }
-
+    /* ADD OFFICE: STEP 1 TO STEP 2 */
     document.getElementById("toStep2").addEventListener("click", function () {
         const province = document.getElementById("officeProvince").value;
 
@@ -72,10 +251,12 @@ document.addEventListener("DOMContentLoaded", function () {
         changeStep(2);
     });
 
+    /* ADD OFFICE: STEP 2 BACK TO STEP 1 */
     document.getElementById("backToStep1").addEventListener("click", function () {
         changeStep(1);
     });
 
+    /* ADD OFFICE: STEP 2 TO STEP 3 */
     document.getElementById("toStep3").addEventListener("click", function () {
         const town = document.getElementById("officeTown").value.trim();
 
@@ -87,10 +268,12 @@ document.addEventListener("DOMContentLoaded", function () {
         changeStep(3);
     });
 
+    /* ADD OFFICE: STEP 3 BACK TO STEP 2 */
     document.getElementById("backToStep2").addEventListener("click", function () {
         changeStep(2);
     });
 
+    /* SAVE A NEW OFFICE */
     document.getElementById("saveOffice").addEventListener("click", function () {
         const province = document.getElementById("officeProvince").value;
         const town = document.getElementById("officeTown").value.trim();
@@ -100,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const shelter = document.getElementById("officeShelter").value;
 
         if (!province || !town || !department || !name || !openingTime) {
-            alert("Please complete all the office details.");
+            alert("Please complete all office details.");
             return;
         }
 
@@ -125,106 +308,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         changeStep(1);
         fillOfficeDropdowns();
+        renderOffices();
         showPage("monitor");
 
         alert("Office registered successfully. You are now viewing the live queue monitor.");
     });
 
-    function renderOffices() {
-        const list = document.getElementById("officeList");
-        list.innerHTML = "";
-
-        if (offices.length === 0) {
-            list.innerHTML = "<div class='card'>No offices have been added yet.</div>";
-            return;
-        }
-
-        offices.forEach(function (office, index) {
-            const peopleWaiting = Math.max(0, office.queue - office.serving);
-            const estimatedWait = peopleWaiting * 3;
-            const hasNoShelter = office.shelter === "No";
-            const queueNotMoving = office.queue > 0 && office.serving === 0;
-            const needsAttention = hasNoShelter || queueNotMoving;
-
-            const card = document.createElement("div");
-            card.className = needsAttention ? "office-card warning" : "office-card";
-
-            card.innerHTML = `
-                <div class="office-header">
-                    <div>
-                        <strong>${office.department}</strong>
-                        <small>${office.name}</small>
-                    </div>
-                    <span class="badge ${needsAttention ? "warning" : ""}">
-                        ${needsAttention ? "ATTENTION" : "LIVE"}
-                    </span>
-                </div>
-
-                <div class="counter-grid">
-                    <div class="counter-box">
-                        <small>NOW SERVING</small>
-                        <strong>${office.serving}</strong>
-                    </div>
-
-                    <div class="counter-box">
-                        <small>PEOPLE WAITING</small>
-                        <strong>${peopleWaiting}</strong>
-                    </div>
-                </div>
-
-                <div class="office-details">
-                    <strong>Location:</strong> ${office.town}, ${office.province}<br>
-                    <strong>Office opens:</strong> ${office.openingTime}<br>
-                    <strong>First person served:</strong> ${office.firstServed || "Not recorded"}<br>
-                    <strong>Estimated wait:</strong> ${estimatedWait} minutes<br>
-                    <strong>Queue shelter:</strong> ${office.shelter}
-                </div>
-
-                ${hasNoShelter ? "<p class='note'>⚠️ Weather warning: people may be waiting outside without shelter.</p>" : ""}
-                ${queueNotMoving ? "<p class='note'>⚠️ Queue has not started moving yet.</p>" : ""}
-
-                <button class="btn danger full report-office-btn" data-office-index="${index}">
-                    ⚠️ Report a Problem at This Office
-                </button>
-            `;
-
-            list.appendChild(card);
-        });
-
-        document.querySelectorAll(".report-office-btn").forEach(function (button) {
-            button.addEventListener("click", function () {
-                const officeIndex = Number(button.dataset.officeIndex);
-                const selectedOffice = offices[officeIndex];
-
-                fillOfficeDropdowns();
-                document.getElementById("complaintOffice").value = selectedOffice.name;
-                showPage("complaints");
-            });
-        });
-    }
-
-    function fillOfficeDropdowns() {
-        const complaintSelect = document.getElementById("complaintOffice");
-        const guardSelect = document.getElementById("guardOffice");
-
-        complaintSelect.innerHTML = "<option value=''>-- Choose Office --</option>";
-        guardSelect.innerHTML = "<option value=''>-- Choose Office --</option>";
-
-        offices.forEach(function (office) {
-            const label = `${office.name} — ${office.town}, ${office.province}`;
-
-            const complaintOption = document.createElement("option");
-            complaintOption.value = office.name;
-            complaintOption.textContent = label;
-            complaintSelect.appendChild(complaintOption);
-
-            const guardOption = document.createElement("option");
-            guardOption.value = office.name;
-            guardOption.textContent = label;
-            guardSelect.appendChild(guardOption);
-        });
-    }
-
+    /* LOAD SELECTED OFFICE DETAILS IN GUARD PORTAL */
     document.getElementById("guardOffice").addEventListener("change", function () {
         const selectedName = this.value;
 
@@ -244,6 +334,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("guardFirstServed").value = office.firstServed;
     });
 
+    /* GUARD UPDATES QUEUE */
     document.getElementById("updateQueue").addEventListener("click", function () {
         const pin = prompt("Enter Guard PIN:");
 
@@ -277,9 +368,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         renderOffices();
         showPage("monitor");
+
         alert("Live queue updated successfully.");
     });
 
+    /* SUBMIT PUBLIC COMPLAINT */
     document.getElementById("submitComplaint").addEventListener("click", function () {
         const complainant = document.getElementById("complainantName").value.trim();
         const province = document.getElementById("complainantProvince").value;
@@ -293,7 +386,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const reference = "MQSA-" + new Date().getTime();
+        const reference = "MQSA-" + Date.now();
 
         complaints.unshift({
             reference: reference,
@@ -315,42 +408,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         renderComplaints();
 
-        alert("Complaint submitted successfully.
-Your reference number is:
-" + reference);
+        alert(
+            "Complaint submitted successfully.
+
+" +
+            "Reference number:
+" +
+            reference
+        );
     });
 
-    function renderComplaints() {
-        const list = document.getElementById("complaintList");
-        list.innerHTML = "";
-
-        if (complaints.length === 0) {
-            list.innerHTML = "<p>No complaints submitted yet.</p>";
-            return;
-        }
-
-        complaints.forEach(function (complaint) {
-            const item = document.createElement("div");
-            item.className = "complaint-item";
-
-            item.innerHTML = `
-                <strong>${complaint.type}</strong>
-                <strong>Reference:</strong> ${complaint.reference}<br>
-                <strong>Office:</strong> ${complaint.office}<br>
-                <strong>Person affected:</strong> ${complaint.affectedPerson}<br>
-                <strong>Reported by:</strong> ${complaint.complainant}, ${complaint.province}<br>
-                <strong>Details:</strong> ${complaint.details}<br>
-                <strong>Submitted:</strong> ${complaint.submittedAt}
-            `;
-
-            list.appendChild(item);
-        });
-    }
-
-    /* TEST MODE:
-       Every 10 seconds, the next person is served.
-       This lets you see the moving number while testing.
-       Later, remove this section when real guards update the system. */
+    /*
+      TEST MODE:
+      The displayed number automatically moves every 10 seconds.
+      This is only for your demonstration and testing.
+    */
     setInterval(function () {
         offices.forEach(function (office) {
             if (office.serving < office.queue) {
@@ -364,11 +436,12 @@ Your reference number is:
 
         const monitorPage = document.getElementById("page-monitor");
 
-        if (monitorPage.classList.contains("active")) {
+        if (monitorPage && monitorPage.classList.contains("active")) {
             renderOffices();
         }
     }, 10000);
 
+    /* OPEN WITH HOME PAGE */
     renderOffices();
     fillOfficeDropdowns();
     renderComplaints();
