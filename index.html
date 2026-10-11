@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetroQueue CPT - Virtual Queue Monitor</title>
+    <title>MetroQueue SA - National Public Service Monitor</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -14,18 +14,22 @@
             padding-bottom: 95px;
         }
         h1 {
-            font-size: 26px;
+            font-size: 28px;
             color: #1e293b;
             text-align: center;
             margin-top: 10px;
             margin-bottom: 5px;
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
         .subtitle {
             text-align: center;
             color: #64748b;
             font-size: 14px;
             margin-bottom: 25px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         .my-ticket-banner {
             display: none;
@@ -38,6 +42,55 @@
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
         }
+        
+        /* Nationwide Search Filter Panel */
+        .search-engine-box {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .search-engine-box h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #0f172a;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .search-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 11px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background-color: #f8fafc;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .search-action-btn {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            font-weight: 700;
+            border: none;
+            padding: 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .search-action-btn:hover { background-color: #1d4ed8; }
+
+        /* Dynamic Output Department Cards */
         .card {
             background: white;
             border-radius: 12px;
@@ -45,6 +98,7 @@
             margin-bottom: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
             border-left: 6px solid #cbd5e1;
+            position: relative;
         }
         .CRITICAL { border-left-color: #ef4444; } 
         .HIGH { border-left-color: #f97316; }     
@@ -56,7 +110,7 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 17px;
             color: #0f172a;
         }
         .badge {
@@ -95,6 +149,17 @@
             margin-top: 12px;
             font-size: 14px;
             color: #475569;
+            line-height: 1.4;
+        }
+        .rating-metrics-display {
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #16a34a;
+            background: #f0fdf4;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: inline-block;
         }
         .warning-text {
             color: #dc2626;
@@ -106,6 +171,8 @@
             border-radius: 6px;
             display: inline-block;
         }
+
+        /* Action Buttons Area */
         .join-line-btn {
             display: block;
             width: 100%;
@@ -119,6 +186,33 @@
             margin-top: 12px;
             cursor: pointer;
         }
+        .civic-actions-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .complaint-btn {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 9px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .rate-btn {
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            padding: 9px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
         .btn-container {
             position: fixed;
             bottom: 0;
@@ -152,158 +246,61 @@
             padding: 14px;
             cursor: pointer;
         }
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 200; 
-            left: 0; top: 0; width: 100%; height: 100%; 
-            background-color: rgba(15, 23, 42, 0.6); 
-            backdrop-filter: blur(4px);
-            align-items: center; justify-content: center;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 24px;
-            border-radius: 16px;
-            width: 85%;
-            max-width: 400px;
-        }
     </style>
 </head>
 <body>
 
-    <h1>MetroQueue</h1>
-    <div class="subtitle">Cape Town CBD Live Line Monitor</div>
+    <h1>MetroQueue SA</h1>
+    <div class="subtitle">National Public Service Infrastructure Monitor</div>
 
     <div id="ticketBanner" class="my-ticket-banner"></div>
 
-    <!-- Department of Labour -->
-    <div class="card HIGH">
-        <div class="dept-header">
-            <span>DEPARTMENT OF LABOUR</span>
-            <span class="badge badge-HIGH">HIGH</span>
+    <!-- ADVANCED COMPREHENSIVE SOUTH AFRICAN FILTER SYSTEM -->
+    <div class="search-engine-box">
+        <h3>📍 Advanced Regional Search Engine</h3>
+        <div class="search-grid">
+            <select id="searchProvince" class="input-field">
+                <option value="">-- Select Province --</option>
+                <option value="Gauteng">Gauteng</option>
+                <option value="Western Cape">Western Cape</option>
+                <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                <option value="Eastern Cape">Eastern Cape</option>
+                <option value="Free State">Free State</option>
+                <option value="Limpopo">Limpopo</option>
+                <option value="Mpumalanga">Mpumalanga</option>
+                <option value="North West">North West</option>
+                <option value="Northern Cape">Northern Cape</option>
+            </select>
+            
+            <input type="text" id="searchTown" class="input-field" placeholder="Type city or town (e.g., Mitchells Plain, Soweto, Pretoria)">
+            
+            <select id="searchDeptType" class="input-field">
+                <option value="">-- Select Department Category --</option>
+                <option value="🏥 Community Clinic">🏥 Community Clinic</option>
+                <option value="🏢 General Hospital">🏢 General Hospital</option>
+                <option value="🪪 Department of Home Affairs">🪪 Department of Home Affairs</option>
+                <option value="🎟️ SASSA Branch">🎟️ SASSA Branch</option>
+                <option value="📈 SARS Revenue Office">📈 SARS Revenue Office</option>
+                <option value="🎓 Department of Education">🎓 Department of Education</option>
+            </select>
+
+            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="Type Specific Facility Name (e.g., Khayelitsha CHC, Chris Hani Baragwanath)">
+            
+            <button id="executeSearchBtn" class="search-action-btn">🔍 Query Live Provincial Feeds</button>
         </div>
-        <div class="live-counter-grid">
-            <div class="counter-box">
-                <div>Now Serving</div>
-                <div class="counter-number">142</div>
-            </div>
-            <div class="counter-box">
-                <div>Total Queue</div>
-                <div class="counter-number">185</div>
-            </div>
-        </div>
-        <div class="details">
-            <strong>Branch:</strong> Thomas Boydell Building (Parade St)<br>
-            <strong>Est. Wait Time:</strong> 120 Mins
-        </div>
-        <div class="warning-text">⚠️ Spilling onto public pavement</div>
-        <button class="join-line-btn" data-dept="DEPARTMENT OF LABOUR">🎟 Register & Join Queue</button>
     </div>
 
-    <!-- CCMA -->
-    <div class="card LOW">
-        <div class="dept-header">
-            <span>CCMA</span>
-            <span class="badge badge-LOW">LOW</span>
-        </div>
-        <div class="live-counter-grid">
-            <div class="counter-box">
-                <div>Now Serving</div>
-                <div class="counter-number">18</div>
+    <!-- FEED CONTAINER AREA -->
+    <div id="dynamicFeedsContainer">
+        
+        <!-- Showcase Demo 1: Home Affairs (Gauteng) -->
+        <div class="card CRITICAL" data-province="Gauteng" data-town="Soweto" data-office="Soweto Maponya Branch">
+            <div class="dept-header">
+                <span>🪪 Department of Home Affairs</span>
+                <span class="badge badge-CRITICAL">CRITICAL</span>
             </div>
-            <div class="counter-box">
-                <div>Total Queue</div>
-                <div class="counter-number">24</div>
-            </div>
-        </div>
-        <div class="details">
-            <strong>Branch:</strong> CCMA House (Darling St)<br>
-            <strong>Est. Wait Time:</strong> 15 Mins
-        </div>
-        <button class="join-line-btn" data-dept="CCMA">🎟 Register & Join Queue</button>
-    </div>
-
-    <!-- SASSA -->
-    <div class="card HIGH">
-        <div class="dept-header">
-            <span>SASSA</span>
-            <span class="badge badge-HIGH">HIGH</span>
-        </div>
-        <div class="live-counter-grid">
-            <div class="counter-box">
-                <div>Now Serving</div>
-                <div class="counter-number">88</div>
-            </div>
-            <div class="counter-box">
-                <div>Total Queue</div>
-                <div class="counter-number">124</div>
-            </div>
-        </div>
-        <div class="details">
-            <strong>Branch:</strong> CBD Local Office<br>
-            <strong>Est. Wait Time:</strong> 110 Mins
-        </div>
-        <div class="warning-text">⚠️ Spilling onto public pavement</div>
-        <button class="join-line-btn" data-dept="SASSA">🎟 Register & Join Queue</button>
-    </div>
-
-    <!-- Home Affairs -->
-    <div class="card CRITICAL">
-        <div class="dept-header">
-            <span>HOME AFFAIRS</span>
-            <span class="badge badge-CRITICAL">CRITICAL</span>
-        </div>
-        <div class="live-counter-grid">
-            <div class="counter-box">
-                <div>Now Serving</div>
-                <div class="counter-number">310</div>
-            </div>
-            <div class="counter-box">
-                <div>Total Queue</div>
-                <div class="counter-number">395</div>
-            </div>
-        </div>
-        <div class="details">
-            <strong>Branch:</strong> Barrack Street<br>
-            <strong>Est. Wait Time:</strong> 180 Mins
-        </div>
-        <div class="warning-text">⚠️ Spilling onto public pavement</div>
-        <button class="join-line-btn" data-dept="HOME AFFAIRS">🎟 Register & Join Queue</button>
-    </div>
-
-    <!-- Housing Department (Fixed Structure) -->
-    <div class="card MEDIUM">
-        <div class="dept-header">
-            <span>HOUSING DEPARTMENT</span>
-            <span class="badge badge-MEDIUM">MEDIUM</span>
-        </div>
-        <div class="live-counter-grid">
-            <div class="counter-box">
-                <div>Now Serving</div>
-                <div class="counter-number">--</div>
-            </div>
-            <div class="counter-box">
-                <div>Total Queue</div>
-                <div class="counter-number">--</div>
-            </div>
-        </div>
-        <div class="details">
-            <strong>Branch:</strong> CBD Local Office<br>
-            <strong>Est. Wait Time:</strong> -- Mins
-        </div>
-        <button class="join-line-btn" data-dept="HOUSING DEPARTMENT">🎟 Register & Join Queue</button>
-    </div>
-
-    <!-- Action Buttons Tray Area -->
-    <div class="btn-container">
-        <button class="report-btn">📢 Report Live Status</button>
-        <button class="guard-portal-btn">🛡️ Guard Portal</button>
-    </div>
-
-    <!-- Live Unified Mongoose Pipeline Registration Script -->
-    <script>
-        // Update this URL if your Node server is running on a different port or domain
-        const API_BASE_URL = 'http://localhost:5000/api'; 
-
-        document.querySelectorAll('.join-line-btn').forEach(btn => {
+            <div class="live-counter-grid">
+                <div class="counter-box">
+                    <div>Now Serving</div>
+                    <div class="counter-number">412</div>
+                </div>
