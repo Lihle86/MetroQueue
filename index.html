@@ -52,9 +52,11 @@
     <div class="subtitle">National Public Service Monitor</div>
     <div id="ticketBanner" class="my-ticket-banner"></div>
 
-    <!-- 3-STEP SEARCH SYSTEM -->
+    <!-- 3-STEP WIZARD SEARCH FORM -->
     <div class="search-engine-box">
-        <!-- STEP 1 -->
+        <h3>📍 Advanced Regional Search Engine</h3>
+        
+        <!-- STEP 1: PROVINCES -->
         <div id="step-1" class="wizard-step active">
             <div class="step-indicator">Step 1 of 3: Regional Scope</div>
             <label class="input-label">Select Your Province:</label>
@@ -75,18 +77,18 @@
             </div>
         </div>
 
-        <!-- STEP 2 -->
+        <!-- STEP 2: TOWN WRITING -->
         <div id="step-2" class="wizard-step">
             <div class="step-indicator">Step 2 of 3: Local District</div>
             <label class="input-label">Type City, Suburb, or Township:</label>
-            <input type="text" id="searchTown" class="input-field" placeholder="e.g., Mitchells Plain, Soweto, Pretoria">
+            <input type="text" id="searchTown" class="input-field" placeholder="e.g., Soweto, Lusikisiki, Bizana">
             <div class="wizard-nav-buttons">
                 <button type="button" class="nav-btn btn-back" onclick="navigateToStep(1)">⬅️ Back</button>
-                <button type="button" class="nav-btn btn-next" onclick="navigateToStep(3)">Next: Agency ➡️</button>
+                <button type="button" class="nav-btn btn-next" onclick="navigateToStep(3)">Next: Select Agency ➡️</button>
             </div>
         </div>
 
-        <!-- STEP 3 -->
+        <!-- STEP 3: DEPARTMENT & FACILITY -->
         <div id="step-3" class="wizard-step">
             <div class="step-indicator">Step 3 of 3: Service Facility</div>
             <label class="input-label">Select Department Category:</label>
@@ -99,8 +101,10 @@
                 <option value="📈 SARS Revenue Office">📈 SARS Revenue Office</option>
                 <option value="🎓 Department of Education">🎓 Department of Education</option>
             </select>
+            
             <label class="input-label">Type Specific Branch Name:</label>
-            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="e.g., Maponya Mall Office, Site B CHC">
+            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="e.g., Mount Ayliff Clinic, Lusikisiki Village Office">
+            
             <div class="wizard-nav-buttons">
                 <button type="button" class="nav-btn btn-back" onclick="navigateToStep(2)">⬅️ Back</button>
                 <button type="button" id="executeSearchBtn" class="nav-btn btn-submit">🔍 Query Live Feed</button>
@@ -110,25 +114,17 @@
 
     <!-- FEED CONTAINER TRAY -->
     <div id="dynamicFeedsContainer">
-        <!-- Default Demo Card -->
-        <div class="card CRITICAL" data-province="Gauteng" data-town="Soweto" data-office="Soweto Maponya Branch">
-            <div class="dept-header">
-                <span>🪪 Department of Home Affairs</span>
-                <span class="badge badge-CRITICAL">CRITICAL</span>
-            </div>
+        <!-- Default Presentable Eastern Cape Showcase Card to illustrate your real vision -->
+        <div class="card CRITICAL" data-province="Eastern Cape" data-town="Lusikisiki" data-office="Lusikisiki Home Affairs">
+            <div class="dept-header"><span>🪪 Department of Home Affairs</span><span class="badge badge-CRITICAL">CRITICAL</span></div>
             <div class="live-counter-grid">
-                <div class="counter-box"><div>Now Serving</div><div class="counter-number serving-num">412</div></div>
-                <div class="counter-box"><div>Total Queue</div><div class="counter-number queue-num">580</div></div>
+                <div class="counter-box"><div>Now Serving</div><div class="counter-number serving-num">105</div></div>
+                <div class="counter-box"><div>Total Queue</div><div class="counter-number queue-num">340</div></div>
             </div>
             <div class="details">
-                <strong>Province:</strong> Gauteng<br>
-                <strong>Town/Suburb:</strong> Soweto<br>
-                <strong>Branch Office:</strong> Soweto Maponya Branch<br>
-                <strong>Est. Wait Time:</strong> <span class="wait-time">504</span> Mins
+                <strong>Province:</strong> Eastern Cape<br>
+                <strong>Town/Suburb:</strong> Lusikisiki<br>
+                <strong>Branch Office:</strong> Lusikisiki Main Street Branch<br>
+                <strong>Est. Wait Time:</strong> <span class="wait-time">705</span> Mins
             </div>
-            <div><span class="rating-metrics-display">⭐ Live Office Rating: <span class="rate-percentage">68</span>% Satisfaction</span></div>
-            
-            <div class="guard-control-station">
-                <div class="guard-title">🛡️ Entrance Guard Control Station</div>
-                <div class="guard-btn-row">
-                    <button type="button" class="shift-btn next" onclick="shiftServingNumber(this)">🔊 Next Serving (+1)</button>
+            <div class="warning-text" style="color:#b91c1c; background:#fef2f2; padding:6px; border-radius:8px; margin-top:12px; font-weight:700; font-size:13px;">⚠️ ALERT: Citizens standing unsheltered outside in rain. Numbers static.</div>
