@@ -168,28 +168,6 @@
             width: 85%;
             max-width: 400px;
         }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
-        .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        .guard-list-item {
-            background: #f8fafc;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border-left: 4px solid #2563eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .serve-btn {
-            background: #22c55e;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -197,110 +175,134 @@
     <h1>MetroQueue</h1>
     <div class="subtitle">Cape Town CBD Live Line Monitor</div>
 
-    <div id="ticketBanner" class="my-ticket-banner">
-        🎟️ Ticket (<span id="myUserFull">--</span>) for <span id="myDept">--</span>: <span id="myNum">#--</span> 
-        (People Ahead: <span id="myWait">--</span>)
+    <div id="ticketBanner" class="my-ticket-banner"></div>
+
+    <!-- Department of Labour -->
+    <div class="card HIGH">
+        <div class="dept-header">
+            <span>DEPARTMENT OF LABOUR</span>
+            <span class="badge badge-HIGH">HIGH</span>
+        </div>
+        <div class="live-counter-grid">
+            <div class="counter-box">
+                <div>Now Serving</div>
+                <div class="counter-number">142</div>
+            </div>
+            <div class="counter-box">
+                <div>Total Queue</div>
+                <div class="counter-number">185</div>
+            </div>
+        </div>
+        <div class="details">
+            <strong>Branch:</strong> Thomas Boydell Building (Parade St)<br>
+            <strong>Est. Wait Time:</strong> 120 Mins
+        </div>
+        <div class="warning-text">⚠️ Spilling onto public pavement</div>
+        <button class="join-line-btn" data-dept="Department of Labour">🎟 Register & Join Queue</button>
     </div>
 
-    <div id="queue-feed">
-        <!-- Department of Labour -->
-        <div class="card HIGH">
-            <div class="dept-header">
-                <span>DEPARTMENT OF LABOUR</span>
-                <span class="badge badge-HIGH">HIGH</span>
-            </div>
-            <div class="live-counter-grid">
-                <div class="counter-box">Now Serving<div class="counter-number" id="serving-LABOUR">142</div></div>
-                <div class="counter-box">Total Queue<div class="counter-number" id="total-LABOUR">185</div></div>
-            </div>
-            <div class="details">
-                <strong>Branch:</strong> Thomas Boydell Building (Parade St)<br>
-                <strong>Est. Wait Time:</strong> 120 Mins
-            </div>
-            <div class="warning-text">⚠️ Spilling onto public pavement</div>
-            <button class="join-line-btn" onclick="openRegistration('DEPARTMENT OF LABOUR', 'LABOUR')">🎟️ Register & Join Queue</button>
+    <!-- CCMA -->
+    <div class="card LOW">
+        <div class="dept-header">
+            <span>CCMA</span>
+            <span class="badge badge-LOW">LOW</span>
         </div>
-
-        <!-- CCMA -->
-        <div class="card LOW">
-            <div class="dept-header">
-                <span>CCMA</span>
-                <span class="badge badge-LOW">LOW</span>
+        <div class="live-counter-grid">
+            <div class="counter-box">
+                <div>Now Serving</div>
+                <div class="counter-number">18</div>
             </div>
-            <div class="live-counter-grid">
-                <div class="counter-box">Now Serving<div class="counter-number" id="serving-CCMA">18</div></div>
-                <div class="counter-box">Total Queue<div class="counter-number" id="total-CCMA">24</div></div>
+            <div class="counter-box">
+                <div>Total Queue</div>
+                <div class="counter-number">24</div>
             </div>
-            <div class="details">
-                <strong>Branch:</strong> CCMA House (Darling St)<br>
-                <strong>Est. Wait Time:</strong> 15 Mins
-            </div>
-            <button class="join-line-btn" onclick="openRegistration('CCMA', 'CCMA')">🎟️ Register & Join Queue</button>
         </div>
-
-        <!-- SASSA -->
-        <div class="card HIGH">
-            <div class="dept-header">
-                <span>SASSA</span>
-                <span class="badge badge-HIGH">HIGH</span>
-            </div>
-            <div class="live-counter-grid">
-                <div class="counter-box">Now Serving<div class="counter-number" id="serving-SASSA">88</div></div>
-                <div class="counter-box">Total Queue<div class="counter-number" id="total-SASSA">124</div></div>
-            </div>
-            <div class="details">
-                <strong>Branch:</strong> CBD Local Office<br>
-                <strong>Est. Wait Time:</strong> 110 Mins
-            </div>
-            <div class="warning-text">⚠️ Spilling onto public pavement</div>
-            <button class="join-line-btn" onclick="openRegistration('SASSA', 'SASSA')">🎟️ Register & Join Queue</button>
+        <div class="details">
+            <strong>Branch:</strong> CCMA House (Darling St)<br>
+            <strong>Est. Wait Time:</strong> 15 Mins
         </div>
-
-        <!-- Home Affairs -->
-        <div class="card CRITICAL">
-            <div class="dept-header">
-                <span>HOME AFFAIRS</span>
-                <span class="badge badge-CRITICAL">CRITICAL</span>
-            </div>
-            <div class="live-counter-grid">
-                <div class="counter-box">Now Serving<div class="counter-number" id="serving-HOME">310</div></div>
-                <div class="counter-box">Total Queue<div class="counter-number" id="total-HOME">395</div></div>
-            </div>
-            <div class="details">
-                <strong>Branch:</strong> Barrack Street<br>
-                <strong>Est. Wait Time:</strong> 180 Mins
-            </div>
-            <div class="warning-text">⚠️ Spilling onto public pavement</div>
-            <button class="join-line-btn" onclick="openRegistration('HOME AFFAIRS', 'HOME')">🎟️ Register & Join Queue</button>
-        </div>
-
-        <!-- Housing Department Card -->
-<div class="department-card">
-    <div class="card-header">
-        <h2>HOUSING DEPARTMENT</h2>
-        <span class="badge medium">MEDIUM</span>
-    </div>
-    
-    <!-- Make sure these stats blocks are added -->
-    <div class="card-stats">
-        <div>
-            <p class="stat-label">Now Serving</p>
-            <p class="stat-number">--</p> <!-- Put your numbers or dynamic variables here -->
-        </div>
-        <div>
-            <p class="stat-label">Total Queue</p>
-            <p class="stat-number">--</p>
-        </div>
+        <button class="join-line-btn" data-dept="CCMA">🎟 Register & Join Queue</button>
     </div>
 
-    <div class="card-details">
-        <p><strong>Branch:</strong> CBD Local Office</p>
-        <p><strong>Est. Wait Time:</strong> -- Mins</p>
+    <!-- SASSA -->
+    <div class="card HIGH">
+        <div class="dept-header">
+            <span>SASSA</span>
+            <span class="badge badge-HIGH">HIGH</span>
+        </div>
+        <div class="live-counter-grid">
+            <div class="counter-box">
+                <div>Now Serving</div>
+                <div class="counter-number">88</div>
+            </div>
+            <div class="counter-box">
+                <div>Total Queue</div>
+                <div class="counter-number">124</div>
+            </div>
+        </div>
+        <div class="details">
+            <strong>Branch:</strong> CBD Local Office<br>
+            <strong>Est. Wait Time:</strong> 110 Mins
+        </div>
+        <div class="warning-text">⚠️ Spilling onto public pavement</div>
+        <button class="join-line-btn" data-dept="SASSA">🎟 Register & Join Queue</button>
     </div>
 
-    <!-- Add the registration button back at the bottom of the card -->
-    <button class="join-queue-btn">
-        🎟 Register & Join Queue
-    </button>
-</div>
+    <!-- Home Affairs -->
+    <div class="card CRITICAL">
+        <div class="dept-header">
+            <span>HOME AFFAIRS</span>
+            <span class="badge badge-CRITICAL">CRITICAL</span>
+        </div>
+        <div class="live-counter-grid">
+            <div class="counter-box">
+                <div>Now Serving</div>
+                <div class="counter-number">310</div>
+            </div>
+            <div class="counter-box">
+                <div>Total Queue</div>
+                <div class="counter-number">395</div>
+            </div>
+        </div>
+        <div class="details">
+            <strong>Branch:</strong> Barrack Street<br>
+            <strong>Est. Wait Time:</strong> 180 Mins
+        </div>
+        <div class="warning-text">⚠️ Spilling onto public pavement</div>
+        <button class="join-line-btn" data-dept="Home Affairs">🎟 Register & Join Queue</button>
+    </div>
 
+    <!-- Housing Department (FIXED LAYOUT STRUCTURE) -->
+    <div class="card MEDIUM">
+        <div class="dept-header">
+            <span>HOUSING DEPARTMENT</span>
+            <span class="badge badge-MEDIUM">MEDIUM</span>
+        </div>
+        <div class="live-counter-grid">
+            <div class="counter-box">
+                <div>Now Serving</div>
+                <div class="counter-number">--</div>
+            </div>
+            <div class="counter-box">
+                <div>Total Queue</div>
+                <div class="counter-number">--</div>
+            </div>
+        </div>
+        <div class="details">
+            <strong>Branch:</strong> CBD Local Office<br>
+            <strong>Est. Wait Time:</strong> -- Mins
+        </div>
+        <button class="join-line-btn" data-dept="Housing Department">🎟 Register & Join Queue</button>
+    </div>
+
+    <!-- Bottom Buttons Layout Area -->
+    <div class="btn-container">
+        <button class="report-btn">📢 Report Live Status</button>
+        <button class="guard-portal-btn">🛡️ Guard Portal</button>
+    </div>
+
+    <!-- JavaScript Interactive Registration Test Block -->
+    <script>
+        document.querySelectorAll('.join-line-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const department = this.getAttribute('data-dept');
