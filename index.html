@@ -140,7 +140,7 @@
             color: #64748b;
         }
         .counter-number {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             color: #0f172a;
             margin-top: 2px;
@@ -172,11 +172,45 @@
             display: inline-block;
         }
 
+        /* Guard Entrance Shift Panel Inside Card */
+        .guard-control-station {
+            margin-top: 15px;
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e1;
+        }
+        .guard-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #475569;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .guard-btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .shift-btn {
+            background-color: #475569;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .shift-btn.next { background-color: #0f172a; }
+
         /* Action Buttons Area */
         .join-line-btn {
             display: block;
             width: 100%;
-            background-color: #0f172a;
+            background-color: #2563eb;
             color: white;
             border: none;
             padding: 12px;
@@ -281,26 +315,3 @@
                 <option value="🪪 Department of Home Affairs">🪪 Department of Home Affairs</option>
                 <option value="🎟️ SASSA Branch">🎟️ SASSA Branch</option>
                 <option value="📈 SARS Revenue Office">📈 SARS Revenue Office</option>
-                <option value="🎓 Department of Education">🎓 Department of Education</option>
-            </select>
-
-            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="Type Specific Facility Name (e.g., Khayelitsha CHC, Chris Hani Baragwanath)">
-            
-            <button id="executeSearchBtn" class="search-action-btn">🔍 Query Live Provincial Feeds</button>
-        </div>
-    </div>
-
-    <!-- FEED CONTAINER AREA -->
-    <div id="dynamicFeedsContainer">
-        
-        <!-- Showcase Demo 1: Home Affairs (Gauteng) -->
-        <div class="card CRITICAL" data-province="Gauteng" data-town="Soweto" data-office="Soweto Maponya Branch">
-            <div class="dept-header">
-                <span>🪪 Department of Home Affairs</span>
-                <span class="badge badge-CRITICAL">CRITICAL</span>
-            </div>
-            <div class="live-counter-grid">
-                <div class="counter-box">
-                    <div>Now Serving</div>
-                    <div class="counter-number">412</div>
-                </div>
