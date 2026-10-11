@@ -198,7 +198,7 @@
             <strong>Est. Wait Time:</strong> 120 Mins
         </div>
         <div class="warning-text">⚠️ Spilling onto public pavement</div>
-        <button class="join-line-btn" data-dept="Department of Labour">🎟 Register & Join Queue</button>
+        <button class="join-line-btn" data-dept="DEPARTMENT OF LABOUR">🎟 Register & Join Queue</button>
     </div>
 
     <!-- CCMA -->
@@ -269,10 +269,10 @@
             <strong>Est. Wait Time:</strong> 180 Mins
         </div>
         <div class="warning-text">⚠️ Spilling onto public pavement</div>
-        <button class="join-line-btn" data-dept="Home Affairs">🎟 Register & Join Queue</button>
+        <button class="join-line-btn" data-dept="HOME AFFAIRS">🎟 Register & Join Queue</button>
     </div>
 
-    <!-- Housing Department (FIXED LAYOUT STRUCTURE) -->
+    <!-- Housing Department (Fixed Structure) -->
     <div class="card MEDIUM">
         <div class="dept-header">
             <span>HOUSING DEPARTMENT</span>
@@ -292,17 +292,18 @@
             <strong>Branch:</strong> CBD Local Office<br>
             <strong>Est. Wait Time:</strong> -- Mins
         </div>
-        <button class="join-line-btn" data-dept="Housing Department">🎟 Register & Join Queue</button>
+        <button class="join-line-btn" data-dept="HOUSING DEPARTMENT">🎟 Register & Join Queue</button>
     </div>
 
-    <!-- Bottom Buttons Layout Area -->
+    <!-- Action Buttons Tray Area -->
     <div class="btn-container">
         <button class="report-btn">📢 Report Live Status</button>
         <button class="guard-portal-btn">🛡️ Guard Portal</button>
     </div>
 
-    <!-- JavaScript Interactive Registration Test Block -->
+    <!-- Live Unified Mongoose Pipeline Registration Script -->
     <script>
+        // Update this URL if your Node server is running on a different port or domain
+        const API_BASE_URL = 'http://localhost:5000/api'; 
+
         document.querySelectorAll('.join-line-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const department = this.getAttribute('data-dept');
