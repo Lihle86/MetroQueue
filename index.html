@@ -45,7 +45,7 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
         
-        /* MULTI-PAGE STEP WIZARD CONTAINER */
+        /* SEARCH WIZARD INTERFACE */
         .search-engine-box {
             background: white;
             border-radius: 16px;
@@ -60,15 +60,12 @@
             color: #0f172a;
             font-size: 16px;
             font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         .wizard-step {
-            display: none; /* Hidden by default, controlled via JS pages toggle */
+            display: none;
         }
         .wizard-step.active {
-            display: block; /* Show only current step */
+            display: block;
         }
         .step-indicator {
             font-size: 12px;
@@ -91,12 +88,11 @@
             border-radius: 10px;
             border: 2px solid #cbd5e1;
             background-color: #f8fafc;
-            font-size: 16px; /* 16px prevents automatic iOS zoom-in distortion */
+            font-size: 16px;
             color: #0f172a;
             box-sizing: border-box;
             margin-bottom: 12px;
             font-weight: 500;
-            transition: border-color 0.2s;
         }
         .input-field:focus {
             outline: none;
@@ -104,7 +100,7 @@
             background-color: #ffffff;
         }
 
-        /* NAVIGATION ACTION CONTROLS */
+        /* WIZARD ACTIONS */
         .wizard-nav-buttons {
             display: flex;
             gap: 10px;
@@ -118,9 +114,7 @@
             font-size: 15px;
             cursor: pointer;
             border: none;
-            transition: opacity 0.2s;
         }
-        .nav-btn:active { opacity: 0.8; }
         .btn-back {
             background-color: #e2e8f0;
             color: #475569;
@@ -134,14 +128,13 @@
             color: white;
         }
 
-        /* LIVE DEPLOYED MONITOR CARDS */
+        /* MONITOR INTERFACE CARDS */
         .card {
             background: white;
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 18px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            border-left: 8px solid #cbd5e1;
             border: 1px solid #e2e8f0;
             border-left: 8px solid #cbd5e1;
             position: relative;
@@ -156,7 +149,7 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 800;
-            font-size: 18px;
+            font-size: 17px;
             color: #0f172a;
         }
         .badge {
@@ -165,7 +158,6 @@
             border-radius: 20px;
             color: white;
             font-weight: 800;
-            letter-spacing: 0.5px;
         }
         .badge-CRITICAL { background-color: #ef4444; }
         .badge-HIGH { background-color: #f97316; }
@@ -181,12 +173,10 @@
             border-radius: 12px;
             margin-top: 14px;
             text-align: center;
-            border: 1px solid #f1f5f9;
         }
         .counter-box {
             font-size: 13px;
             color: #64748b;
-            font-weight: 600;
         }
         .counter-number {
             font-size: 26px;
@@ -199,9 +189,6 @@
             font-size: 14px;
             color: #334155;
             line-height: 1.5;
-            background: #f8fafc;
-            padding: 12px;
-            border-radius: 10px;
         }
         .rating-metrics-display {
             margin-top: 12px;
@@ -212,7 +199,6 @@
             padding: 6px 12px;
             border-radius: 8px;
             display: inline-block;
-            border: 1px solid #dcfce7;
         }
         .warning-text {
             color: #b91c1c;
@@ -223,10 +209,9 @@
             padding: 6px 10px;
             border-radius: 8px;
             display: block;
-            border: 1px solid #fee2e2;
         }
 
-        /* GUARD PANEL MOBILE ENHANCEMENTS */
+        /* DOORWAY CONTROLS FOR ENTRANCE GUARDS */
         .guard-control-station {
             margin-top: 16px;
             background: #f8fafc;
@@ -260,10 +245,9 @@
             font-weight: 700;
             cursor: pointer;
         }
-        .shift-btn:active { opacity: 0.9; }
         .shift-btn.next { background-color: #0f172a; }
 
-        /* CITIZEN BOOKING ACTIONS PANEL */
+        /* VIRTUAL CHECK-IN PANEL LINKS */
         .join-line-btn {
             display: block;
             width: 100%;
@@ -276,10 +260,7 @@
             font-size: 15px;
             margin-top: 14px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.15);
         }
-        .join-line-btn:active { background-color: #1d4ed8; }
-        
         .civic-actions-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -307,7 +288,7 @@
             cursor: pointer;
         }
 
-        /* FIXED APP NAVIGATION BASE TRAY */
+        /* PERSISTENT FOOTER DEPLOYMENT BAR */
         .btn-container {
             position: fixed;
             bottom: 0;
@@ -339,3 +320,20 @@
 <body>
 
     <h1>MetroQueue SA</h1>
+    <div class="subtitle">National Public Service Infrastructure Monitor</div>
+
+    <div id="ticketBanner" class="my-ticket-banner"></div>
+
+    <!-- 3-STEP SEARCH ENGINE WIZARD FOR MOUNTED WIDE MOBILE VIEWS -->
+    <div class="search-engine-box">
+        <h3>📍 Advanced Regional Search Engine</h3>
+        
+        <!-- STEP 1: SELECT PROVINCE -->
+        <div id="step-1" class="wizard-step active">
+            <div class="step-indicator">Step 1 of 3: Regional Scope</div>
+            <label class="input-label">Select Your Province:</label>
+            <select id="searchProvince" class="input-field">
+                <option value="">-- Choose Province --</option>
+                <option value="Gauteng">Gauteng</option>
+                <option value="Western Cape">Western Cape</option>
+                <option value="KwaZulu-Natal">KwaZulu-Natal</option>
