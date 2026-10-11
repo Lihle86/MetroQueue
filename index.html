@@ -5,25 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MetroQueue SA</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 16px; background-color: #f4f6f9; color: #1e293b; padding-bottom: 110px; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+            margin: 0; 
+            padding: 16px; 
+            background-color: #f4f6f9; 
+            color: #1e293b; 
+            padding-bottom: 110px; 
+        }
         h1 { font-size: 26px; color: #0f172a; text-align: center; margin-top: 10px; font-weight: 800; }
         .subtitle { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 20px; font-weight: 700; text-transform: uppercase; }
         .my-ticket-banner { display: none; background: #2563eb; color: white; padding: 14px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-weight: bold; font-size: 14px; }
-        .search-engine-box { background: white; border-radius: 16px; padding: 20px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        
+        /* SEARCH WIZARD INTERFACE */
+        .search-engine-box { background: white; border-radius: 16px; padding: 20px; margin-bottom: 25px; border: 1px solid #e2e8f0; box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+        .search-engine-box h3 { margin-top: 0; margin-bottom: 16px; color: #0f172a; font-size: 16px; font-weight: 700; }
         .wizard-step { display: none; }
         .wizard-step.active { display: block; }
         .step-indicator { font-size: 12px; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 8px; }
         .input-label { display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 8px; }
-        .input-field { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #cbd5e1; background-color: #f8fafc; font-size: 16px; color: #0f172a; box-sizing: border-box; margin-bottom: 12px; }
+        .input-field { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #cbd5e1; background-color: #f8fafc; font-size: 16px; color: #0f172a; box-sizing: border-box; margin-bottom: 12px; font-weight: 500; }
+        
+        /* NAVIGATION BUTTONS */
         .wizard-nav-buttons { display: flex; gap: 10px; margin-top: 8px; }
         .nav-btn { flex: 1; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; border: none; text-align: center; }
         .btn-back { background-color: #e2e8f0; color: #475569; }
         .btn-next { background-color: #2563eb; color: white; }
-        .btn-submit { background-color: #16a34a; color: white; width: 100%; display: block; }
-        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 18px; border: 1px solid #e2e8f0; border-left: 8px solid #cbd5e1; }
+        .btn-submit { background-color: #16a34a; color: white; }
+        
+        /* MONITOR INTERFACE CARDS */
+        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 18px; border: 1px solid #e2e8f0; border-left: 8px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .CRITICAL { border-left-color: #ef4444; }
         .HIGH { border-left-color: #f97316; }
-        .dept-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 17px; }
+        .dept-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 17px; color: #0f172a; }
         .badge { font-size: 11px; padding: 5px 12px; border-radius: 20px; color: white; font-weight: 800; }
         .badge-CRITICAL { background-color: #ef4444; }
         .badge-HIGH { background-color: #f97316; }
@@ -32,18 +46,25 @@
         .counter-number { font-size: 26px; font-weight: 800; color: #0f172a; margin-top: 4px; }
         .details { margin-top: 14px; font-size: 14px; color: #334155; line-height: 1.5; }
         .rating-metrics-display { margin-top: 12px; font-weight: 700; font-size: 13px; color: #16a34a; background: #f0fdf4; padding: 6px 12px; border-radius: 8px; display: inline-block; }
+        
+        /* GUARD CONTROL STATION PANEL */
         .guard-control-station { margin-top: 16px; background: #f8fafc; padding: 14px; border-radius: 12px; border: 2px dashed #cbd5e1; }
-        .guard-title { font-size: 12px; font-weight: 800; color: #475569; margin-bottom: 10px; text-transform: uppercase; text-align: center; }
+        .guard-title { font-size: 12px; font-weight: 800; color: #475569; margin-bottom: 10px; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; }
         .guard-btn-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .guard-btn-row:last-child { margin-bottom: 0; }
         .shift-btn { flex: 1; background-color: #64748b; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; }
         .shift-btn.next { background-color: #0f172a; }
+        
+        /* ACTIONS FOOTER TRAY */
         .join-line-btn { display: block; width: 100%; background-color: #2563eb; color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px; margin-top: 14px; cursor: pointer; text-align: center; }
         .civic-actions-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
         .complaint-btn { background-color: #ef4444; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
         .rate-btn { background-color: #22c55e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
+        
         .btn-container { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; padding: 12px 0; display: flex; justify-content: center; gap: 12px; z-index: 100; border-top: 1px solid #e2e8f0; }
         .report-btn, .guard-portal-btn { width: 44%; color: white; border-radius: 10px; font-weight: 700; border: none; padding: 14px; font-size: 14px; text-align: center; }
-        .report-btn { background-color: #2563eb; } .guard-portal-btn { background-color: #475569; }
+        .report-btn { background-color: #2563eb; } 
+        .guard-portal-btn { background-color: #475569; }
     </style>
 </head>
 <body>
@@ -52,11 +73,11 @@
     <div class="subtitle">National Public Service Monitor</div>
     <div id="ticketBanner" class="my-ticket-banner"></div>
 
-    <!-- 3-STEP WIZARD SEARCH FORM -->
+    <!-- 3-STEP FORM SYSTEM (PERFECTLY CLOSED BLOCKS) -->
     <div class="search-engine-box">
         <h3>📍 Advanced Regional Search Engine</h3>
         
-        <!-- STEP 1: PROVINCES -->
+        <!-- STEP 1 -->
         <div id="step-1" class="wizard-step active">
             <div class="step-indicator">Step 1 of 3: Regional Scope</div>
             <label class="input-label">Select Your Province:</label>
@@ -77,18 +98,18 @@
             </div>
         </div>
 
-        <!-- STEP 2: TOWN WRITING -->
+        <!-- STEP 2 -->
         <div id="step-2" class="wizard-step">
             <div class="step-indicator">Step 2 of 3: Local District</div>
             <label class="input-label">Type City, Suburb, or Township:</label>
-            <input type="text" id="searchTown" class="input-field" placeholder="e.g., Soweto, Lusikisiki, Bizana">
+            <input type="text" id="searchTown" class="input-field" placeholder="e.g., Lusikisiki, Soweto, Mthatha">
             <div class="wizard-nav-buttons">
                 <button type="button" class="nav-btn btn-back" onclick="navigateToStep(1)">⬅️ Back</button>
                 <button type="button" class="nav-btn btn-next" onclick="navigateToStep(3)">Next: Select Agency ➡️</button>
             </div>
         </div>
 
-        <!-- STEP 3: DEPARTMENT & FACILITY -->
+        <!-- STEP 3 -->
         <div id="step-3" class="wizard-step">
             <div class="step-indicator">Step 3 of 3: Service Facility</div>
             <label class="input-label">Select Department Category:</label>
@@ -101,10 +122,8 @@
                 <option value="📈 SARS Revenue Office">📈 SARS Revenue Office</option>
                 <option value="🎓 Department of Education">🎓 Department of Education</option>
             </select>
-            
             <label class="input-label">Type Specific Branch Name:</label>
-            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="e.g., Mount Ayliff Clinic, Lusikisiki Village Office">
-            
+            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="e.g., Lusikisiki Main Street Office">
             <div class="wizard-nav-buttons">
                 <button type="button" class="nav-btn btn-back" onclick="navigateToStep(2)">⬅️ Back</button>
                 <button type="button" id="executeSearchBtn" class="nav-btn btn-submit">🔍 Query Live Feed</button>
@@ -112,19 +131,17 @@
         </div>
     </div>
 
-    <!-- FEED CONTAINER TRAY -->
+    <!-- CARDS DISPLAY PANEL CONTAINER -->
     <div id="dynamicFeedsContainer">
-        <!-- Default Presentable Eastern Cape Showcase Card to illustrate your real vision -->
-        <div class="card CRITICAL" data-province="Eastern Cape" data-town="Lusikisiki" data-office="Lusikisiki Home Affairs">
-            <div class="dept-header"><span>🪪 Department of Home Affairs</span><span class="badge badge-CRITICAL">CRITICAL</span></div>
+        <!-- Default Eastern Cape Presentation Card -->
+        <div class="card CRITICAL" data-province="Eastern Cape" data-town="Lusikisiki" data-office="Lusikisiki Main Street Branch">
+            <div class="dept-header">
+                <span>🪪 Department of Home Affairs</span>
+                <span class="badge badge-CRITICAL">CRITICAL</span>
+            </div>
             <div class="live-counter-grid">
                 <div class="counter-box"><div>Now Serving</div><div class="counter-number serving-num">105</div></div>
                 <div class="counter-box"><div>Total Queue</div><div class="counter-number queue-num">340</div></div>
             </div>
             <div class="details">
                 <strong>Province:</strong> Eastern Cape<br>
-                <strong>Town/Suburb:</strong> Lusikisiki<br>
-                <strong>Branch Office:</strong> Lusikisiki Main Street Branch<br>
-                <strong>Est. Wait Time:</strong> <span class="wait-time">705</span> Mins
-            </div>
-            <div class="warning-text" style="color:#b91c1c; background:#fef2f2; padding:6px; border-radius:8px; margin-top:12px; font-weight:700; font-size:13px;">⚠️ ALERT: Citizens standing unsheltered outside in rain. Numbers static.</div>
