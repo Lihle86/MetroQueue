@@ -1,287 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetroQueue SA - National Public Service Monitor</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 15px;
-            background-color: #f4f6f9;
-            color: #333;
-            padding-bottom: 95px;
-        }
-        h1 {
-            font-size: 28px;
-            color: #1e293b;
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        .my-ticket-banner {
-            display: none;
-            background: #2563eb;
-            color: white;
-            padding: 14px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-        }
-        
-        /* Nationwide Search Filter Panel */
-        .search-engine-box {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-        }
-        .search-engine-box h3 {
-            margin-top: 0;
-            margin-bottom: 12px;
-            color: #0f172a;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .search-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .input-field {
-            width: 100%;
-            padding: 11px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            background-color: #f8fafc;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        .search-action-btn {
-            width: 100%;
-            background-color: #2563eb;
-            color: white;
-            font-weight: 700;
-            border: none;
-            padding: 13px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-        .search-action-btn:hover { background-color: #1d4ed8; }
-
-        /* Dynamic Output Department Cards */
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            border-left: 6px solid #cbd5e1;
-            position: relative;
-        }
-        .CRITICAL { border-left-color: #ef4444; } 
-        .HIGH { border-left-color: #f97316; }     
-        .MEDIUM { border-left-color: #eab308; }   
-        .LOW { border-left-color: #22c55e; }      
-
-        .dept-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-            font-size: 17px;
-            color: #0f172a;
-        }
-        .badge {
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            color: white;
-            font-weight: 800;
-        }
-        .badge-CRITICAL { background-color: #ef4444; }
-        .badge-HIGH { background-color: #f97316; }
-        .badge-MEDIUM { background-color: #eab308; }
-        .badge-LOW { background-color: #22c55e; }
-
-        .live-counter-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            background: #f8fafc;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 12px;
-            text-align: center;
-        }
-        .counter-box {
-            font-size: 13px;
-            color: #64748b;
-        }
-        .counter-number {
-            font-size: 22px;
-            font-weight: 800;
-            color: #0f172a;
-            margin-top: 2px;
-        }
-        .details {
-            margin-top: 12px;
-            font-size: 14px;
-            color: #475569;
-            line-height: 1.4;
-        }
-        .rating-metrics-display {
-            margin-top: 10px;
-            font-weight: 700;
-            font-size: 13px;
-            color: #16a34a;
-            background: #f0fdf4;
-            padding: 6px 10px;
-            border-radius: 6px;
-            display: inline-block;
-        }
-        .warning-text {
-            color: #dc2626;
-            font-weight: 700;
-            margin-top: 10px;
-            font-size: 13px;
-            background: #fef2f2;
-            padding: 4px 8px;
-            border-radius: 6px;
-            display: inline-block;
-        }
-
-        /* Guard Entrance Shift Panel Inside Card */
-        .guard-control-station {
-            margin-top: 15px;
-            background: #f1f5f9;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px dashed #cbd5e1;
-        }
-        .guard-title {
-            font-size: 12px;
-            font-weight: bold;
-            color: #475569;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .guard-btn-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 6px;
-        }
-        .shift-btn {
-            background-color: #475569;
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .shift-btn.next { background-color: #0f172a; }
-
-        /* Action Buttons Area */
-        .join-line-btn {
-            display: block;
-            width: 100%;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 14px;
-            margin-top: 12px;
-            cursor: pointer;
-        }
-        .civic-actions-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .complaint-btn {
-            background-color: #ef4444;
-            color: white;
-            border: none;
-            padding: 9px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-        }
-        .rate-btn {
-            background-color: #22c55e;
-            color: white;
-            border: none;
-            padding: 9px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .btn-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #f4f6f9;
-            padding: 15px 0;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            z-index: 100;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
-        }
-        .report-btn {
-            width: 45%;
-            background-color: #2563eb;
-            color: white;
-            border-radius: 10px;
-            font-weight: 700;
-            border: none;
-            padding: 14px;
-            cursor: pointer;
-        }
-        .guard-portal-btn {
-            width: 45%;
-            background-color: #475569;
-            color: white;
-            border-radius: 10px;
-            font-weight: 700;
-            border: none;
-            padding: 14px;
-            cursor: pointer;
-        }
-    </style>
-</head>
 <body>
 
     <h1>MetroQueue SA</h1>
@@ -315,3 +31,170 @@
                 <option value="🪪 Department of Home Affairs">🪪 Department of Home Affairs</option>
                 <option value="🎟️ SASSA Branch">🎟️ SASSA Branch</option>
                 <option value="📈 SARS Revenue Office">📈 SARS Revenue Office</option>
+                <option value="🎓 Department of Education">🎓 Department of Education</option>
+            </select>
+
+            <input type="text" id="searchSpecificFacility" class="input-field" placeholder="Type Specific Facility Name (e.g., Khayelitsha CHC)">
+            
+            <button id="executeSearchBtn" class="search-action-btn">🔍 Query Live Provincial Feeds</button>
+        </div>
+    </div>
+
+    <!-- FEED CONTAINER AREA -->
+    <div id="dynamicFeedsContainer">
+        <!-- Default Showcase Card: Home Affairs (Gauteng) -->
+        <div class="card CRITICAL" data-province="Gauteng" data-town="Soweto" data-office="Soweto Maponya Branch">
+            <div class="dept-header">
+                <span>🪪 Department of Home Affairs</span>
+                <span class="badge badge-CRITICAL">CRITICAL</span>
+            </div>
+            <div class="live-counter-grid">
+                <div class="counter-box">
+                    <div>Now Serving</div>
+                    <div class="counter-number serving-num">412</div>
+                </div>
+                <div class="counter-box">
+                    <div>Total Queue</div>
+                    <div class="counter-number queue-num">580</div>
+                </div>
+            </div>
+            <div class="details">
+                <strong>Province:</strong> Gauteng<br>
+                <strong>Town/Suburb:</strong> Soweto<br>
+                <strong>Branch Office:</strong> Soweto Maponya Branch<br>
+                <strong>Est. Wait Time:</strong> <span class="wait-time">504</span> Mins
+            </div>
+            <div class="warning-text">⚠️ Long delays due to system offline errors</div>
+            <div>
+                <span class="rating-metrics-display">⭐ Live Office Rating: <span class="rate-percentage">68</span>% Satisfaction</span>
+            </div>
+
+            <!-- Entrance Guard Panel Inside Card -->
+            <div class="guard-control-station">
+                <div class="guard-title">🛡️ Entrance Guard Control Station</div>
+                <div class="guard-btn-row">
+                    <button class="shift-btn next" onclick="shiftServingNumber(this)">🔊 Shift Serving Next (+1)</button>
+                    <button class="shift-btn" onclick="adjustTotalQueue(this, 5)">Add 5 to Queue</button>
+                </div>
+                <div class="guard-btn-row">
+                    <button class="shift-btn" onclick="adjustTotalQueue(this, -5)">Reduce 5 People</button>
+                    <button class="shift-btn" onclick="resetCardStats(this)">Reset Counters</button>
+                </div>
+            </div>
+
+            <button class="join-line-btn">🎟 Book Ticket & Join Line</button>
+            <div class="civic-actions-wrapper">
+                <button class="complaint-btn">⚠️ Report Staff / Issue</button>
+                <button class="rate-btn">⭐ Rate Service</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button class="report-btn">📢 Report Live Status</button>
+        <button class="guard-portal-btn">🛡️ Guard Portal</button>
+    </div>
+
+    <script>
+        // Search execution listener engine
+        document.getElementById('executeSearchBtn').addEventListener('click', function() {
+            const province = document.getElementById('searchProvince').value;
+            const town = document.getElementById('searchTown').value.trim();
+            const deptType = document.getElementById('searchDeptType').value;
+            const facilityName = document.getElementById('searchSpecificFacility').value.trim();
+
+            if (!province || !town || !deptType || !facilityName) {
+                return alert("Presentation Tip: Please populate all search fields to generate your custom office card.");
+            }
+
+            const container = document.getElementById('dynamicFeedsContainer');
+
+            const newCardHtml = `
+                <div class="card HIGH" data-province="${province}" data-town="${town}" data-office="${facilityName}">
+                    <div class="dept-header">
+                        <span>${deptType}</span>
+                        <span class="badge badge-HIGH">HIGH</span>
+                    </div>
+                    <div class="live-counter-grid">
+                        <div class="counter-box">
+                            <div>Now Serving</div>
+                            <div class="counter-number serving-num">1</div>
+                        </div>
+                        <div class="counter-box">
+                            <div>Total Queue</div>
+                            <div class="counter-number queue-num">15</div>
+                        </div>
+                    </div>
+                    <div class="details">
+                        <strong>Province:</strong> ${province}<br>
+                        <strong>Town/Suburb:</strong> ${town}<br>
+                        <strong>Branch Office:</strong> ${facilityName}<br>
+                        <strong>Est. Wait Time:</strong> <span class="wait-time">42</span> Mins
+                    </div>
+                    <div>
+                        <span class="rating-metrics-display">⭐ Live Office Rating: <span class="rate-percentage">100</span>% Satisfaction</span>
+                    </div>
+
+                    <div class="guard-control-station">
+                        <div class="guard-title">🛡️ Entrance Guard Control Station</div>
+                        <div class="guard-btn-row">
+                            <button class="shift-btn next" onclick="shiftServingNumber(this)">🔊 Shift Serving Next (+1)</button>
+                            <button class="shift-btn" onclick="adjustTotalQueue(this, 5)">Add 5 to Queue</button>
+                        </div>
+                        <div class="guard-btn-row">
+                            <button class="shift-btn" onclick="adjustTotalQueue(this, -5)">Reduce 5 People</button>
+                            <button class="shift-btn" onclick="resetCardStats(this)">Reset Counters</button>
+                        </div>
+                    </div>
+
+                    <button class="join-line-btn">🎟 Book Ticket & Join Line</button>
+                    <div class="civic-actions-wrapper">
+                        <button class="complaint-btn">⚠️ Report Staff / Issue</button>
+                        <button class="rate-btn">⭐ Rate Service</button>
+                    </div>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('afterbegin', newCardHtml);
+            attachCardEvents();
+            alert(`Live System Generated:\nSuccessfully loaded live feed monitor card for "${facilityName}" located in ${town}, ${province}!`);
+        });
+
+        // Guard Counter Operational Engine
+        function shiftServingNumber(buttonEl) {
+            const card = buttonEl.closest('.card');
+            const servingCounter = card.querySelector('.serving-num');
+            const queueCounter = card.querySelector('.queue-num');
+
+            let currentServing = parseInt(servingCounter.innerText) || 0;
+            let currentQueue = parseInt(queueCounter.innerText) || 0;
+
+            if (currentServing >= currentQueue) {
+                alert("Guard Notice: All registered citizens in the queue have been successfully served!");
+                return;
+            }
+
+            servingCounter.innerText = currentServing + 1;
+            recalculateWaitTime(card);
+        }
+
+        function adjustTotalQueue(buttonEl, amount) {
+            const card = buttonEl.closest('.card');
+            const queueCounter = card.querySelector('.queue-num');
+
+            let currentQueue = parseInt(queueCounter.innerText) || 0;
+            let newQueue = currentQueue + amount;
+
+            if (newQueue < 0) newQueue = 0;
+
+            queueCounter.innerText = newQueue;
+            recalculateWaitTime(card);
+        }
+
+        function resetCardStats(buttonEl) {
+            const card = buttonEl.closest('.card');
+            card.querySelector('.serving-num').innerText = "1";
+            card.querySelector('.queue-num').innerText = "10";
+            recalculateWaitTime(card);
+        }
+
